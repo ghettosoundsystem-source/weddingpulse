@@ -1,1 +1,2324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#1E1B18" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>WeddingPulse — Luxury Guest Photo &amp; Audio Guestbook</title>
+  <style>
+    :root {
+      --ivory: #FAF6F0;
+      --paper: #FFFDF9;
+      --champagne: #EFE6D5;
+      --gold: #B8964E;
+      --gold-light: #DEC384;
+      --gold-dark: #8C6D2E;
+      --ink: #1E1B18;
+      --ink-soft: #5C5349;
+      --sage: #3E5245;
+      --sage-light: #EEF3EF;
+      --burgundy: #7A2E3A;
+      --border: rgba(184, 150, 78, 0.42);
+      --shadow: 0 14px 36px rgba(30, 27, 24, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #FFFDF9 0%, #F4ECE0 60%, #E9DEC9 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    /* =========================================================
+       HOST PAYWALL & LOGIN OVERLAY
+       ========================================================= */
+    #hostGateOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(24, 20, 17, 0.86);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    #hostGateOverlay.hidden {
+      display: none;
+    }
+
+    .gate-card {
+      width: 100%;
+      max-width: 470px;
+      background: linear-gradient(180deg, var(--paper) 0%, var(--ivory) 100%);
+      border: 2px solid var(--gold);
+      border-radius: 22px;
+      padding: 26px 22px;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), inset 0 0 0 5px rgba(184, 150, 78, 0.16);
+      text-align: center;
+    }
+
+    .crest-pill {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--gold);
+      background: var(--champagne);
+      color: var(--gold-dark);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .gate-card h1 {
+      margin: 2px 0 6px;
+      font-size: 1.9rem;
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+    }
+
+    .gate-sub {
+      margin: 0 0 16px;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .gate-perks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .perk-item {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      color: var(--ink);
+    }
+
+    .btn-gold-cta {
+      display: block;
+      width: 100%;
+      padding: 15px 16px;
+      background: linear-gradient(135deg, #2B2520 0%, #161310 100%);
+      color: var(--gold-light);
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 1.02rem;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(22, 19, 16, 0.28);
+      margin-bottom: 8px;
+    }
+
+    .btn-guest-preview {
+      display: block;
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--sage-light);
+      color: var(--sage);
+      border: 1px solid rgba(62, 82, 69, 0.35);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .divider-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .divider-line::before,
+    .divider-line::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .login-panel {
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .login-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .login-panel input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #D5C7AE;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: #FFF;
+      color: var(--ink);
+    }
+
+    .btn-unlock {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+      color: #FFFDF9;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .gate-status {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: var(--burgundy);
+      font-weight: bold;
+      min-height: 18px;
+    }
+
+    /* =========================================================
+       MAIN APP CONTAINER & HEADER
+       ========================================================= */
+    .app-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 14px 14px 56px;
+    }
+
+    .topbar {
+      background: var(--paper);
+      border: 1.5px solid var(--gold);
+      border-radius: 18px;
+      padding: 14px 18px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .brand-block h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      font-weight: normal;
+      letter-spacing: 0.03em;
+      color: var(--ink);
+    }
+
+    .brand-block p {
+      margin: 2px 0 0;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+    }
+
+    .topbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--champagne);
+      border: 1px solid var(--gold);
+      color: var(--gold-dark);
+      font-size: 0.78rem;
+      font-weight: bold;
+    }
+
+    .btn-outline {
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--ivory);
+      color: var(--ink);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    #guestModeBanner {
+      display: none;
+      background: var(--sage);
+      color: #FFFDF9;
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #guestModeBanner.visible {
+      display: flex;
+    }
+
+    .nav-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .nav-tab {
+      background: rgba(255, 253, 249, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 8px;
+      font-size: 0.86rem;
+      font-weight: bold;
+      color: var(--ink-soft);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .nav-tab.active {
+      background: var(--ink);
+      color: var(--gold-light);
+      border-color: var(--gold);
+      box-shadow: 0 8px 20px rgba(30, 27, 24, 0.22);
+    }
+
+    .nav-tab.locked-tab {
+      opacity: 0.6;
+    }
+
+    .panel-card {
+      display: none;
+      background: var(--paper);
+      border: 1.5px solid var(--gold);
+      border-radius: 20px;
+      padding: 20px 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-card.active {
+      display: block;
+    }
+
+    .section-head {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .section-head h3 {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: normal;
+      color: var(--ink);
+    }
+
+    .section-head p {
+      margin: 3px 0 0;
+      font-size: 0.86rem;
+      color: var(--ink-soft);
+    }
+
+    /* =========================================================
+       GUEST BOOTH (PHOTO + 30S VOICE TOAST)
+       ========================================================= */
+    .wedding-hero {
+      text-align: center;
+      background: linear-gradient(180deg, var(--ivory) 0%, var(--champagne) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 14px;
+      margin-bottom: 18px;
+    }
+
+    .wedding-hero .eyebrow {
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+      font-weight: bold;
+    }
+
+    .wedding-hero h2 {
+      margin: 6px 0 4px;
+      font-size: 1.75rem;
+      font-weight: normal;
+      color: var(--ink);
+    }
+
+    .wedding-hero .date-line {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      font-style: italic;
+    }
+
+    .booth-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .booth-box {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .booth-box h4 {
+      margin: 0 0 6px;
+      font-size: 1.12rem;
+      color: var(--ink);
+    }
+
+    .booth-box p {
+      margin: 0 0 12px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.45;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    .field-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+    }
+
+    .field-group input,
+    .field-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #D5C7AE;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      background: #FFF;
+      color: var(--ink);
+    }
+
+    .btn-action-dark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--ink);
+      color: var(--gold-light);
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-action-sage {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--sage);
+      color: #FFFDF9;
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-action-burgundy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--burgundy);
+      color: #FFFDF9;
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.96rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .polaroid-preview {
+      margin-top: 12px;
+      background: #FFF;
+      border: 1px solid #DDD2BE;
+      border-radius: 8px;
+      padding: 10px 10px 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      text-align: center;
+      display: none;
+    }
+
+    .polaroid-preview.visible {
+      display: block;
+    }
+
+    .polaroid-preview img {
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .recorder-stage {
+      background: #FFF;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .timer-readout {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+
+    .timer-sub {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+      margin-top: 2px;
+    }
+
+    .wave-bars {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      height: 28px;
+      margin: 10px 0;
+    }
+
+    .wave-bar {
+      width: 5px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 99px;
+      transition: height 0.12s ease;
+    }
+
+    .wave-bars.recording .wave-bar {
+      background: var(--burgundy);
+      animation: pulseWave 0.6s infinite alternate ease-in-out;
+    }
+
+    .wave-bars.recording .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bars.recording .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bars.recording .wave-bar:nth-child(4) { animation-delay: 0.1s; }
+    .wave-bars.recording .wave-bar:nth-child(5) { animation-delay: 0.25s; }
+
+    @keyframes pulseWave {
+      from { height: 6px; }
+      to { height: 26px; }
+    }
+
+    /* =========================================================
+       TAB 2: TABLE-TENT QR STATIONERY CARD
+       ========================================================= */
+    .qr-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .tent-preview-box {
+      background: var(--champagne);
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    #tableTentCanvas {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+      aspect-ratio: 5 / 7;
+      background: #FFFDF9;
+      border-radius: 6px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      display: block;
+      margin: 0 auto 12px;
+    }
+
+    .two-col-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* =========================================================
+       TAB 3: KEEPSAKE GALLERY (PHOTOS & VOICE TOASTS)
+       ========================================================= */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-tile {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-tile strong {
+      display: block;
+      font-size: 1.45rem;
+      color: var(--ink);
+    }
+
+    .stat-tile span {
+      font-size: 0.78rem;
+      color: var(--ink-soft);
+    }
+
+    .keepsake-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .keepsake-item {
+      background: #FFF;
+      border: 1px solid #DFD3BE;
+      border-radius: 14px;
+      padding: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .keepsake-item img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .keepsake-item audio {
+      width: 100%;
+      height: 38px;
+    }
+
+    .keepsake-meta {
+      font-size: 0.84rem;
+      color: var(--ink);
+    }
+
+    .keepsake-note {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+
+    .btn-delete-small {
+      align-self: flex-end;
+      background: none;
+      border: 1px solid #D8C7AE;
+      color: var(--burgundy);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.74rem;
+      cursor: pointer;
+    }
+
+    /* =========================================================
+       TAB 4: ZIP ARCHIVE & HOST ACCOUNT CREDENTIALS
+       ========================================================= */
+    .account-box {
+      background: var(--ivory);
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .studio-footer {
+      text-align: center;
+      margin-top: 26px;
+      font-size: 0.76rem;
+      color: var(--ink-soft);
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 780px) {
+      .nav-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .booth-grid,
+      .qr-layout,
+      .login-fields {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A5 portrait;
+        margin: 0;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+      #tableTentCanvas,
+      #tableTentCanvas * {
+        visibility: visible !important;
+      }
+      #tableTentCanvas {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 148mm !important;
+        height: 210mm !important;
+        max-width: none !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       HOST ACTIVATION & LOGIN OVERLAY
+       ========================================================= -->
+  <div id="hostGateOverlay" role="dialog" aria-modal="true" aria-labelledby="gateHeading">
+    <div class="gate-card">
+      <div class="crest-pill">Zero-Download Event Guestbook</div>
+      <h1 id="gateHeading">WeddingPulse</h1>
+      <p class="gate-sub">
+        Turn every guest's smartphone into a 35mm disposable camera and 30-second audio guestbook—no app download required.
+      </p>
+
+      <div class="gate-perks">
+        <div class="perk-item">📸 35mm Film-Style Photos</div>
+        <div class="perk-item">🎙️ 30-Second Voice Toasts</div>
+        <div class="perk-item">🖨️ Printable QR Table Cards</div>
+        <div class="perk-item">📦 One-Tap .ZIP Keepsakes</div>
+      </div>
+
+      <a
+        id="stripeCheckoutBtn"
+        class="btn-gold-cta"
+        href="https://buy.stripe.com/6oUbJ1cexfVibmLfkY8EM0d"
+        rel="noopener"
+      >
+        Unlock Host Event Pass — &pound;29.99 via Stripe
+      </a>
+
+      <button type="button" id="openGuestDemoBtn" class="btn-guest-preview">
+        Open Guest Photo &amp; Voice Booth (Guest View)
+      </button>
+
+      <div class="divider-line">Couple Account or Developer Login</div>
+
+      <div class="login-panel">
+        <div class="login-fields">
+          <input type="text" id="loginUserField" placeholder="Couple Username" autocomplete="username" />
+          <input type="password" id="loginPassField" placeholder="Account / Dev Password" autocomplete="current-password" />
+        </div>
+        <button type="button" id="hostLoginBtn" class="btn-unlock">
+          Enter Host Studio
+        </button>
+        <div id="gateStatusMsg" class="gate-status" role="status"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN APPLICATION SHELL
+       ========================================================= -->
+  <div class="app-container">
+    <header class="topbar">
+      <div class="brand-block">
+        <h2>WeddingPulse</h2>
+        <p>Editorial Guest Photo &amp; Voice Toast Keepsake Studio</p>
+      </div>
+      <div class="topbar-actions">
+        <span id="roleStatusPill" class="status-pill">Guest Booth Mode</span>
+        <button type="button" id="switchRoleBtn" class="btn-outline">🔑 Host Login</button>
+      </div>
+    </header>
+
+    <div id="guestModeBanner" role="status">
+      <div>
+        <strong>✨ Welcome to the Wedding Guestbook!</strong>
+        <div style="font-size:0.84rem; margin-top:2px;">
+          Snap a disposable-style photo or record a 30-second voice toast for the happy couple below.
+        </div>
+      </div>
+      <button type="button" id="bannerHostBtn" class="btn-outline" style="background:#FFF; font-weight:bold;">
+        Host Studio &rarr;
+      </button>
+    </div>
+
+    <nav class="nav-bar" aria-label="WeddingPulse Navigation">
+      <button type="button" class="nav-tab active" data-tab="boothTab">📸 Guest Booth</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="qrTab" data-host-only="true">🖨️ QR Table Card</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="galleryTab" data-host-only="true">🥂 Keepsake Vault</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Account</button>
+    </nav>
+
+    <!-- =======================================================
+         TAB 1: ZERO-DOWNLOAD GUEST PHOTO & VOICE BOOTH
+         ======================================================= -->
+    <section id="boothTab" class="panel-card active">
+      <div class="wedding-hero">
+        <div class="eyebrow">Leave a Memory For</div>
+        <h2 id="heroCoupleDisplay">Charlotte &amp; Oliver</h2>
+        <div id="heroDateVenueDisplay" class="date-line">22 November 2026 &bull; Cambridge</div>
+      </div>
+
+      <div class="booth-grid">
+        <!-- 35MM DISPOSABLE PHOTO BOOTH -->
+        <div class="booth-box">
+          <h4>1. Snap a 35mm Disposable Photo</h4>
+          <p>Take a candid photo with your phone camera. We develop it with warm vintage film grain and a classic date stamp.</p>
+
+          <div class="field-group">
+            <label for="photoGuestName">Your Name / Table</label>
+            <input type="text" id="photoGuestName" placeholder="e.g. Auntie Sarah (Table 4)" />
+          </div>
+
+          <div class="field-group">
+            <label for="photoGuestCaption">Photo Caption / Note</label>
+            <input type="text" id="photoGuestCaption" placeholder="e.g. Cheers to the newlyweds!" />
+          </div>
+
+          <input
+            type="file"
+            id="cameraFileInput"
+            accept="image/*"
+            capture="environment"
+            style="display:none;"
+          />
+
+          <button type="button" id="triggerCameraBtn" class="btn-action-dark">
+            📷 Take Photo or Choose Picture
+          </button>
+
+          <div id="photoPreviewCard" class="polaroid-preview">
+            <img id="developedPhotoImg" alt="Developed 35mm wedding keepsake preview" />
+            <div id="developedCaptionPreview" style="font-style:italic; font-size:0.86rem; color:#1E1B18; margin-bottom:8px;"></div>
+            <button type="button" id="savePhotoToVaultBtn" class="btn-action-sage">
+              ✓ Add Photo to Wedding Guestbook
+            </button>
+          </div>
+          <div id="photoStatusMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+        </div>
+
+        <!-- 30-SECOND VOICE TOAST RECORDER -->
+        <div class="booth-box">
+          <h4>2. Record a 30-Second Voice Toast</h4>
+          <p>Leave a heartfelt message, marriage advice, or funny memory in your own voice for the couple to replay forever.</p>
+
+          <div class="field-group">
+            <label for="audioGuestName">Your Name / Table</label>
+            <input type="text" id="audioGuestName" placeholder="e.g. Tom &amp; Chloe" />
+          </div>
+
+          <div class="field-group">
+            <label for="audioToastTopic">Toast Occasion / Note (Optional)</label>
+            <input type="text" id="audioToastTopic" placeholder="e.g. Best man speech after-party toast!" />
+          </div>
+
+          <div class="recorder-stage">
+            <div id="recordTimerDisplay" class="timer-readout">00:30</div>
+            <div id="recordSubStatus" class="timer-sub">Maximum 30 seconds per voice toast</div>
+            <div id="waveBars" class="wave-bars" aria-hidden="true">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+            <audio id="toastPreviewPlayer" controls style="display:none; width:100%; margin-top:8px;"></audio>
+          </div>
+
+          <button type="button" id="recordToggleBtn" class="btn-action-burgundy">
+            🎙️ Start 30-Second Recording
+          </button>
+
+          <button type="button" id="saveAudioToVaultBtn" class="btn-action-sage" style="display:none; margin-top:8px;">
+            ✓ Save Voice Toast to Guestbook
+          </button>
+          <div id="audioStatusMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         TAB 2: HOST EVENT SETUP & PRINTABLE QR TABLE-TENT CARD
+         ======================================================= -->
+    <section id="qrTab" class="panel-card">
+      <div class="section-head">
+        <div>
+          <h3>Printable Luxury QR Table-Tent Stationery</h3>
+          <p>Customise your wedding details and print 5&times;7&quot; table cards so guests can scan and join instantly.</p>
+        </div>
+      </div>
+
+      <div class="qr-layout">
+        <div>
+          <div class="field-group">
+            <label for="coupleNamesInput">Couple's Names</label>
+            <input type="text" id="coupleNamesInput" value="Charlotte &amp; Oliver" />
+          </div>
+
+          <div class="field-group">
+            <label for="weddingDateInput">Wedding Date &amp; Venue</label>
+            <input type="text" id="weddingDateInput" value="22 November 2026 • Cambridge" />
+          </div>
+
+          <div class="field-group">
+            <label for="tablePromptInput">Table Card Instruction Line</label>
+            <input type="text" id="tablePromptInput" value="Scan to snap a 35mm photo &amp; leave a 30s voice toast" />
+          </div>
+
+          <div class="field-group">
+            <label for="guestUrlInput">Live Guest QR URL (Auto-detected from GitHub Pages)</label>
+            <input type="url" id="guestUrlInput" />
+          </div>
+
+          <button type="button" id="refreshTentBtn" class="btn-action-dark">
+            ✨ Update Table-Tent Stationery Card
+          </button>
+        </div>
+
+        <div class="tent-preview-box">
+          <canvas id="tableTentCanvas" width="1050" height="1470" aria-label="Printable Wedding QR Table Tent Card"></canvas>
+          <div class="two-col-btns">
+            <button type="button" id="downloadTentPngBtn" class="btn-action-sage">
+              ⬇️ Download PNG
+            </button>
+            <button type="button" id="printTentBtn" class="btn-action-dark">
+              🖨️ Print Table Card
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         TAB 3: COUPLE'S KEEPSAKE VAULT (PHOTOS & AUDIO GALLERY)
+         ======================================================= -->
+    <section id="galleryTab" class="panel-card">
+      <div class="section-head">
+        <div>
+          <h3>Couple's Private Keepsake Vault</h3>
+          <p>Every candid 35mm photo and 30-second voice toast captured by your guests.</p>
+        </div>
+        <button type="button" id="refreshGalleryBtn" class="btn-outline">↻ Refresh Vault</button>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-tile">
+          <strong id="statPhotoCount">0</strong>
+          <span>35mm Photos</span>
+        </div>
+        <div class="stat-tile">
+          <strong id="statAudioCount">0</strong>
+          <span>Voice Toasts</span>
+        </div>
+        <div class="stat-tile">
+          <strong id="statTotalCount">0</strong>
+          <span>Total Memories</span>
+        </div>
+      </div>
+
+      <div id="keepsakeGrid" class="keepsake-grid"></div>
+    </section>
+
+    <!-- =======================================================
+         TAB 4: OFFLINE .ZIP ARCHIVE & HOST ACCOUNT SETTINGS
+         ======================================================= -->
+    <section id="exportTab" class="panel-card">
+      <div class="section-head">
+        <div>
+          <h3>Offline Keepsake .ZIP Archive &amp; Host Account</h3>
+          <p>Download all guest photos, audio files, and a printable HTML guestbook in one offline .ZIP bundle.</p>
+        </div>
+      </div>
+
+      <div class="account-box">
+        <strong style="font-size:1.05rem; color:var(--ink);">📦 Complete Offline Keepsake Bundle</strong>
+        <p style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);">
+          Packages every guest photo (.jpg), every 30-second voice toast (.webm / .m4a), and an illustrated Guestbook Index (.html) into a single downloadable .ZIP archive.
+        </p>
+        <button type="button" id="downloadZipArchiveBtn" class="btn-action-dark">
+          ⬇️ Download Full Wedding Keepsakes (.ZIP)
+        </button>
+        <div id="zipStatusMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+      </div>
+
+      <div class="account-box">
+        <strong style="font-size:1.05rem; color:var(--ink);">🔑 Couple Host Account Login</strong>
+        <p id="hostAccountSummary" style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);"></p>
+
+        <div id="hostAccountEditor" class="login-fields">
+          <input type="text" id="editHostUserInput" placeholder="Couple Username (e.g. CharlotteOliver)" />
+          <input type="text" id="editHostPassInput" placeholder="Couple Password (min 4 chars)" />
+        </div>
+        <button type="button" id="saveHostAccountBtn" class="btn-action-sage" style="margin-top:8px;">
+          Save Host Username &amp; Password
+        </button>
+        <div id="hostAccountSaveMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+      </div>
+    </section>
+
+    <footer class="studio-footer">
+      WeddingPulse &bull; Crafted by Aetheria Continuum Studio, Cambridge
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* =========================================================
+         1. CONFIGURATION & AUTHENTICATION CONSTANTS
+         ========================================================= */
+      const STRIPE_EVENT_LINK = "https://buy.stripe.com/6oUbJ1cexfVibmLfkY8EM0d";
+      const DEV_MASTER_PASSWORD = "PULSE-DEV-2026";
+
+      const STORAGE_KEYS = {
+        hostAccount: "wp_paid_host_account_v1",
+        activeRole: "wp_active_role_v1",
+        eventConfig: "wp_event_config_v1"
+      };
+
+      const DB_NAME = "WeddingPulseKeepsakesDB";
+      const DB_VERSION = 1;
+      const STORE_NAME = "memories";
+
+      function safeGet(key, fallback) {
+        try {
+          const raw = window.localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch (err) {
+          return fallback;
+        }
+      }
+
+      function safeSet(key, val) {
+        try {
+          window.localStorage.setItem(key, JSON.stringify(val));
+        } catch (err) {
+          /* Ignore storage errors */
+        }
+      }
+
+      function registerInlineManifest() {
+        try {
+          const iconSvg =
+            "data:image/svg+xml;utf8," +
+            encodeURIComponent(
+              '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">' +
+              '<rect width="512" height="512" rx="96" fill="#1E1B18"/>' +
+              '<circle cx="256" cy="256" r="205" fill="none" stroke="#B8964E" stroke-width="16"/>' +
+              '<text x="256" y="295" font-size="195" text-anchor="middle">🥂</text>' +
+              "</svg>"
+            );
+          const manifest = {
+            name: "WeddingPulse Guestbook",
+            short_name: "WeddingPulse",
+            start_url: "./",
+            display: "standalone",
+            background_color: "#FAF6F0",
+            theme_color: "#1E1B18",
+            icons: [{ src: iconSvg, sizes: "512x512", type: "image/svg+xml" }]
+          };
+          const blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });
+          const link = document.createElement("link");
+          link.rel = "manifest";
+          link.href = URL.createObjectURL(blob);
+          document.head.appendChild(link);
+        } catch (err) {
+          /* Optional */
+        }
+      }
+
+      /* =========================================================
+         2. INDEXEDDB STORAGE FOR HIGH-RES PHOTOS & AUDIO TOASTS
+         ========================================================= */
+      function openKeepsakeDB() {
+        return new Promise((resolve, reject) => {
+          if (!window.indexedDB) {
+            reject(new Error("IndexedDB unavailable"));
+            return;
+          }
+          const req = window.indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = function (e) {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+              db.createObjectStore(STORE_NAME, { keyPath: "id" });
+            }
+          };
+          req.onsuccess = function (e) {
+            resolve(e.target.result);
+          };
+          req.onerror = function () {
+            reject(req.error);
+          };
+        });
+      }
+
+      async function saveMemoryItem(item) {
+        const db = await openKeepsakeDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          tx.objectStore(STORE_NAME).put(item);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      }
+
+      async function getAllMemoryItems() {
+        const db = await openKeepsakeDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE_NAME, "readonly");
+          const req = tx.objectStore(STORE_NAME).getAll();
+          req.onsuccess = () => {
+            const list = req.result || [];
+            list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            resolve(list);
+          };
+          req.onerror = () => reject(req.error);
+        });
+      }
+
+      async function deleteMemoryItem(id) {
+        const db = await openKeepsakeDB();
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE_NAME, "readwrite");
+          tx.objectStore(STORE_NAME).delete(id);
+          tx.oncomplete = () => resolve();
+          tx.onerror = () => reject(tx.error);
+        });
+      }
+
+      /* =========================================================
+         3. HOST & DEVELOPER AUTHENTICATION + GUEST QR MODE
+         ========================================================= */
+      let currentRole = "GUEST";
+
+      function generateInitialCouplePassword() {
+        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        const part = () =>
+          Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
+        return "WP-" + part() + "-" + part();
+      }
+
+      function applyRoleUI(role) {
+        currentRole = role;
+        const overlay = document.getElementById("hostGateOverlay");
+        const pill = document.getElementById("roleStatusPill");
+        const switchBtn = document.getElementById("switchRoleBtn");
+        const guestBanner = document.getElementById("guestModeBanner");
+        const hostTabs = document.querySelectorAll('.nav-tab[data-host-only="true"]');
+        const acctSummary = document.getElementById("hostAccountSummary");
+        const acctEditor = document.getElementById("hostAccountEditor");
+        const saveAcctBtn = document.getElementById("saveHostAccountBtn");
+
+        const isHost = role === "DEV" || role === "CUSTOMER";
+
+        hostTabs.forEach((t) => {
+          if (isHost) {
+            t.classList.remove("locked-tab");
+          } else {
+            t.classList.add("locked-tab");
+          }
+        });
+
+        if (isHost) {
+          if (overlay) overlay.classList.add("hidden");
+          if (guestBanner) guestBanner.classList.remove("visible");
+          if (switchBtn) switchBtn.textContent = "🔒 Lock Host Vault";
+
+          if (role === "DEV") {
+            if (pill) pill.textContent = "Developer Admin";
+            if (acctSummary) {
+              acctSummary.innerHTML =
+                "Signed in with <strong>Developer Master Password</strong> (<code>" +
+                DEV_MASTER_PASSWORD +
+                "</code>).";
+            }
+            if (acctEditor) acctEditor.style.display = "none";
+            if (saveAcctBtn) saveAcctBtn.style.display = "none";
+          } else {
+            const acct = safeGet(STORAGE_KEYS.hostAccount, null);
+            if (pill) pill.textContent = "Host: " + (acct ? acct.username : "Couple");
+            if (acctSummary && acct) {
+              acctSummary.innerHTML =
+                "Current Username: <code>" +
+                acct.username +
+                "</code> &bull; Current Password: <code>" +
+                acct.password +
+                "</code>";
+              const uIn = document.getElementById("editHostUserInput");
+              const pIn = document.getElementById("editHostPassInput");
+              if (uIn) uIn.value = acct.username;
+              if (pIn) pIn.value = acct.password;
+            }
+            if (acctEditor) acctEditor.style.display = "grid";
+            if (saveAcctBtn) saveAcctBtn.style.display = "inline-flex";
+          }
+        } else {
+          if (pill) pill.textContent = "Guest Booth Mode";
+          if (switchBtn) switchBtn.textContent = "🔑 Host Login";
+          if (guestBanner) guestBanner.classList.add("visible");
+          switchToTab("boothTab");
+        }
+      }
+
+      function switchToTab(tabId) {
+        const tabs = document.querySelectorAll(".nav-tab");
+        const panels = document.querySelectorAll(".panel-card");
+        tabs.forEach((t) => t.classList.remove("active"));
+        panels.forEach((p) => p.classList.remove("active"));
+
+        const activeBtn = document.querySelector('.nav-tab[data-tab="' + tabId + '"]');
+        const activePanel = document.getElementById(tabId);
+        if (activeBtn) activeBtn.classList.add("active");
+        if (activePanel) activePanel.classList.add("active");
+
+        if (tabId === "galleryTab") renderKeepsakeGallery();
+        if (tabId === "qrTab") drawTableTentCard();
+      }
+
+      function initAuthAndNavigation() {
+        const stripeBtn = document.getElementById("stripeCheckoutBtn");
+        if (stripeBtn) stripeBtn.href = STRIPE_EVENT_LINK;
+
+        const params = new URLSearchParams(window.location.search);
+        const isStripeReturn =
+          params.get("unlocked") === "true" ||
+          params.get("payment") === "success" ||
+          Boolean(params.get("session_id"));
+        const isGuestQrScan = params.get("mode") === "guest";
+
+        if (isStripeReturn) {
+          let acct = safeGet(STORAGE_KEYS.hostAccount, null);
+          if (!acct || !acct.isPaid) {
+            acct = {
+              isPaid: true,
+              username: "Newlyweds",
+              password: generateInitialCouplePassword(),
+              createdAt: Date.now()
+            };
+            safeSet(STORAGE_KEYS.hostAccount, acct);
+          }
+          safeSet(STORAGE_KEYS.activeRole, "CUSTOMER");
+          try {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          } catch (err) {
+            /* Ignore */
+          }
+          applyRoleUI("CUSTOMER");
+          switchToTab("exportTab");
+          const msg = document.getElementById("hostAccountSaveMsg");
+          if (msg) {
+            msg.textContent =
+              "Event unlocked! Set your personal Couple Username & Password below so you can log in anytime.";
+          }
+        } else if (isGuestQrScan) {
+          const overlay = document.getElementById("hostGateOverlay");
+          if (overlay) overlay.classList.add("hidden");
+          applyRoleUI("GUEST");
+        } else {
+          const savedRole = safeGet(STORAGE_KEYS.activeRole, null);
+          const acct = safeGet(STORAGE_KEYS.hostAccount, null);
+          if (savedRole === "DEV") {
+            applyRoleUI("DEV");
+          } else if (savedRole === "CUSTOMER" && acct && acct.isPaid) {
+            applyRoleUI("CUSTOMER");
+          }
+        }
+
+        const guestPreviewBtn = document.getElementById("openGuestDemoBtn");
+        if (guestPreviewBtn) {
+          guestPreviewBtn.addEventListener("click", () => {
+            const overlay = document.getElementById("hostGateOverlay");
+            if (overlay) overlay.classList.add("hidden");
+            applyRoleUI("GUEST");
+          });
+        }
+
+        const loginBtn = document.getElementById("hostLoginBtn");
+        if (loginBtn) {
+          loginBtn.addEventListener("click", () => {
+            const userVal = (document.getElementById("loginUserField").value || "").trim();
+            const passVal = (document.getElementById("loginPassField").value || "").trim();
+            const statusEl = document.getElementById("gateStatusMsg");
+
+            if (passVal === DEV_MASTER_PASSWORD) {
+              if (statusEl) statusEl.textContent = "";
+              safeSet(STORAGE_KEYS.activeRole, "DEV");
+              applyRoleUI("DEV");
+              return;
+            }
+
+            const acct = safeGet(STORAGE_KEYS.hostAccount, null);
+            if (acct && acct.isPaid) {
+              const userOk = !userVal || userVal.toLowerCase() === acct.username.toLowerCase();
+              const passOk = passVal === acct.password;
+              if (userOk && passOk) {
+                if (statusEl) statusEl.textContent = "";
+                safeSet(STORAGE_KEYS.activeRole, "CUSTOMER");
+                applyRoleUI("CUSTOMER");
+                return;
+              }
+            }
+
+            if (statusEl) {
+              statusEl.textContent =
+                "Invalid username or password. Unlock your £29.99 Event Pass via Stripe or enter a valid login.";
+            }
+          });
+        }
+
+        const switchBtn = document.getElementById("switchRoleBtn");
+        const bannerHostBtn = document.getElementById("bannerHostBtn");
+        const openGate = () => {
+          safeSet(STORAGE_KEYS.activeRole, null);
+          const overlay = document.getElementById("hostGateOverlay");
+          if (overlay) overlay.classList.remove("hidden");
+        };
+        if (switchBtn) switchBtn.addEventListener("click", openGate);
+        if (bannerHostBtn) bannerHostBtn.addEventListener("click", openGate);
+
+        const saveAcctBtn = document.getElementById("saveHostAccountBtn");
+        if (saveAcctBtn) {
+          saveAcctBtn.addEventListener("click", () => {
+            const acct = safeGet(STORAGE_KEYS.hostAccount, null);
+            const msg = document.getElementById("hostAccountSaveMsg");
+            if (!acct || !acct.isPaid) return;
+
+            const newU = (document.getElementById("editHostUserInput").value || "").trim();
+            const newP = (document.getElementById("editHostPassInput").value || "").trim();
+            if (!newU || newP.length < 4) {
+              if (msg) {
+                msg.style.color = "#7A2E3A";
+                msg.textContent = "Please enter a username and a password of at least 4 characters.";
+              }
+              return;
+            }
+            acct.username = newU;
+            acct.password = newP;
+            safeSet(STORAGE_KEYS.hostAccount, acct);
+            applyRoleUI("CUSTOMER");
+            if (msg) {
+              msg.style.color = "#3E5245";
+              msg.textContent = "Saved! Use this username and password anytime to open your Host Vault.";
+            }
+          });
+        }
+
+        document.querySelectorAll(".nav-tab").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const target = btn.getAttribute("data-tab");
+            const hostOnly = btn.getAttribute("data-host-only") === "true";
+            if (hostOnly && currentRole === "GUEST") {
+              openGate();
+              return;
+            }
+            switchToTab(target);
+          });
+        });
+      }
+
+      /* =========================================================
+         4. 35MM DISPOSABLE PHOTO DEVELOPER (CANVAS FILM FILTER)
+         ========================================================= */
+      let pendingDevelopedDataUrl = null;
+
+      function develop35mmPhoto(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = function (ev) {
+            const img = new Image();
+            img.onload = function () {
+              const maxSide = 1200;
+              let w = img.width;
+              let h = img.height;
+              if (w > maxSide || h > maxSide) {
+                if (w > h) {
+                  h = Math.round((h * maxSide) / w);
+                  w = maxSide;
+                } else {
+                  w = Math.round((w * maxSide) / h);
+                  h = maxSide;
+                }
+              }
+
+              const canvas = document.createElement("canvas");
+              canvas.width = w;
+              canvas.height = h;
+              const ctx = canvas.getContext("2d");
+
+              ctx.drawImage(img, 0, 0, w, h);
+
+              const imgData = ctx.getImageData(0, 0, w, h);
+              const d = imgData.data;
+              for (let i = 0; i < d.length; i += 4) {
+                const grain = (Math.random() - 0.5) * 18;
+                d[i] = Math.min(255, Math.max(0, d[i] * 1.05 + 8 + grain));
+                d[i + 1] = Math.min(255, Math.max(0, d[i + 1] * 1.02 + 4 + grain));
+                d[i + 2] = Math.min(255, Math.max(0, d[i + 2] * 0.93 + grain));
+              }
+              ctx.putImageData(imgData, 0, 0);
+
+              const rad = ctx.createRadialGradient(w / 2, h / 2, w * 0.28, w / 2, h / 2, Math.max(w, h) * 0.72);
+              rad.addColorStop(0, "rgba(0,0,0,0)");
+              rad.addColorStop(1, "rgba(25,18,12,0.28)");
+              ctx.fillStyle = rad;
+              ctx.fillRect(0, 0, w, h);
+
+              const now = new Date();
+              const dd = String(now.getDate()).padStart(2, "0");
+              const mm = String(now.getMonth() + 1).padStart(2, "0");
+              const yy = String(now.getFullYear()).slice(-2);
+              const stamp = dd + " · " + mm + " · '" + yy;
+
+              ctx.font = "bold " + Math.max(18, Math.round(w * 0.026)) + "px monospace";
+              ctx.fillStyle = "rgba(255, 138, 43, 0.92)";
+              ctx.shadowColor = "rgba(255, 90, 0, 0.65)";
+              ctx.shadowBlur = 6;
+              ctx.textAlign = "right";
+              ctx.fillText(stamp, w - Math.round(w * 0.035), h - Math.round(h * 0.035));
+
+              resolve(canvas.toDataURL("image/jpeg", 0.86));
+            };
+            img.onerror = () => reject(new Error("Could not decode image"));
+            img.src = ev.target.result;
+          };
+          reader.onerror = () => reject(new Error("Could not read file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function initPhotoBooth() {
+        const triggerBtn = document.getElementById("triggerCameraBtn");
+        const fileInput = document.getElementById("cameraFileInput");
+        const previewCard = document.getElementById("photoPreviewCard");
+        const previewImg = document.getElementById("developedPhotoImg");
+        const captionPreview = document.getElementById("developedCaptionPreview");
+        const saveBtn = document.getElementById("savePhotoToVaultBtn");
+        const statusMsg = document.getElementById("photoStatusMsg");
+
+        if (triggerBtn && fileInput) {
+          triggerBtn.addEventListener("click", () => {
+            fileInput.click();
+          });
+
+          fileInput.addEventListener("change", async (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            if (statusMsg) statusMsg.textContent = "Developing 35mm film print...";
+            try {
+              const dataUrl = await develop35mmPhoto(file);
+              pendingDevelopedDataUrl = dataUrl;
+              const guest = (document.getElementById("photoGuestName").value || "Wedding Guest").trim();
+              const note = (document.getElementById("photoGuestCaption").value || "").trim();
+              if (previewImg) previewImg.src = dataUrl;
+              if (captionPreview) {
+                captionPreview.textContent = note ? '"' + note + '" — ' + guest : "Captured by " + guest;
+              }
+              if (previewCard) previewCard.classList.add("visible");
+              if (statusMsg) statusMsg.textContent = "";
+            } catch (err) {
+              if (statusMsg) statusMsg.textContent = "Please try taking or selecting another photo.";
+            }
+          });
+        }
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async () => {
+            if (!pendingDevelopedDataUrl) return;
+            const guest = (document.getElementById("photoGuestName").value || "Wedding Guest").trim();
+            const note = (document.getElementById("photoGuestCaption").value || "").trim();
+
+            await saveMemoryItem({
+              id: "photo_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+              type: "photo",
+              guestName: guest,
+              note: note,
+              dataUrl: pendingDevelopedDataUrl,
+              createdAt: Date.now()
+            });
+
+            pendingDevelopedDataUrl = null;
+            if (fileInput) fileInput.value = "";
+            if (previewCard) previewCard.classList.remove("visible");
+            if (statusMsg) {
+              statusMsg.textContent = "Saved! Your 35mm photo is now in the couple's Keepsake Vault.";
+            }
+          });
+        }
+      }
+
+      /* =========================================================
+         5. 30-SECOND VOICE TOAST RECORDER (CROSS-BROWSER SAFE)
+         ========================================================= */
+      let mediaRecorder = null;
+      let audioChunks = [];
+      let recordTimerInterval = null;
+      let secondsLeft = 30;
+      let pendingAudioDataUrl = null;
+      let pendingAudioMime = "audio/webm";
+
+      function pickSupportedAudioMime() {
+        if (!window.MediaRecorder || typeof MediaRecorder.isTypeSupported !== "function") {
+          return "";
+        }
+        const candidates = [
+          "audio/webm;codecs=opus",
+          "audio/webm",
+          "audio/mp4",
+          "audio/ogg;codecs=opus"
+        ];
+        for (let i = 0; i < candidates.length; i++) {
+          if (MediaRecorder.isTypeSupported(candidates[i])) {
+            return candidates[i];
+          }
+        }
+        return "";
+      }
+
+      function initAudioBooth() {
+        const toggleBtn = document.getElementById("recordToggleBtn");
+        const saveBtn = document.getElementById("saveAudioToVaultBtn");
+        const timerEl = document.getElementById("recordTimerDisplay");
+        const subEl = document.getElementById("recordSubStatus");
+        const wavesEl = document.getElementById("waveBars");
+        const playerEl = document.getElementById("toastPreviewPlayer");
+        const statusEl = document.getElementById("audioStatusMsg");
+
+        function stopActiveRecording() {
+          if (recordTimerInterval) {
+            clearInterval(recordTimerInterval);
+            recordTimerInterval = null;
+          }
+          if (mediaRecorder && mediaRecorder.state !== "inactive") {
+            mediaRecorder.stop();
+          }
+          if (wavesEl) wavesEl.classList.remove("recording");
+          if (toggleBtn) toggleBtn.textContent = "🎙️ Re-Record 30-Second Toast";
+        }
+
+        if (toggleBtn) {
+          toggleBtn.addEventListener("click", async () => {
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+              stopActiveRecording();
+              return;
+            }
+
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+              if (statusEl) {
+                statusEl.textContent = "Microphone access requires HTTPS (such as your live GitHub Pages URL).";
+              }
+              return;
+            }
+
+            try {
+              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+              const mime = pickSupportedAudioMime();
+              pendingAudioMime = mime || "audio/webm";
+              audioChunks = [];
+              pendingAudioDataUrl = null;
+              if (saveBtn) saveBtn.style.display = "none";
+              if (playerEl) playerEl.style.display = "none";
+              if (statusEl) statusEl.textContent = "";
+
+              mediaRecorder = mime ? new MediaRecorder(stream, { mimeType: mime }) : new MediaRecorder(stream);
+
+              mediaRecorder.ondataavailable = (ev) => {
+                if (ev.data && ev.data.size > 0) {
+                  audioChunks.push(ev.data);
+                }
+              };
+
+              mediaRecorder.onstop = () => {
+                stream.getTracks().forEach((t) => t.stop());
+                const blob = new Blob(audioChunks, { type: mediaRecorder.mimeType || pendingAudioMime });
+                pendingAudioMime = blob.type || pendingAudioMime;
+
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  pendingAudioDataUrl = reader.result;
+                  if (playerEl) {
+                    playerEl.src = pendingAudioDataUrl;
+                    playerEl.style.display = "block";
+                  }
+                  if (saveBtn) saveBtn.style.display = "inline-flex";
+                  if (subEl) subEl.textContent = "Toast ready! Listen back or save to the guestbook.";
+                };
+                reader.readAsDataURL(blob);
+              };
+
+              secondsLeft = 30;
+              if (timerEl) timerEl.textContent = "00:30";
+              if (subEl) subEl.textContent = "Recording live... tap button below when finished";
+              if (wavesEl) wavesEl.classList.add("recording");
+              toggleBtn.textContent = "⏹️ Stop Recording";
+
+              mediaRecorder.start(250);
+
+              recordTimerInterval = setInterval(() => {
+                secondsLeft--;
+                if (timerEl) {
+                  timerEl.textContent = "00:" + String(Math.max(0, secondsLeft)).padStart(2, "0");
+                }
+                if (secondsLeft <= 0) {
+                  stopActiveRecording();
+                }
+              }, 1000);
+            } catch (err) {
+              if (statusEl) {
+                statusEl.textContent = "Please allow microphone permission in your browser to record a voice toast.";
+              }
+            }
+          });
+        }
+
+        if (saveBtn) {
+          saveBtn.addEventListener("click", async () => {
+            if (!pendingAudioDataUrl) return;
+            const guest = (document.getElementById("audioGuestName").value || "Wedding Guest").trim();
+            const note = (document.getElementById("audioToastTopic").value || "").trim();
+
+            await saveMemoryItem({
+              id: "audio_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+              type: "audio",
+              guestName: guest,
+              note: note,
+              mimeType: pendingAudioMime,
+              dataUrl: pendingAudioDataUrl,
+              createdAt: Date.now()
+            });
+
+            pendingAudioDataUrl = null;
+            if (saveBtn) saveBtn.style.display = "none";
+            if (playerEl) playerEl.style.display = "none";
+            if (timerEl) timerEl.textContent = "00:30";
+            if (subEl) subEl.textContent = "Maximum 30 seconds per voice toast";
+            if (statusEl) {
+              statusEl.textContent = "Saved! Your 30-second voice toast is now in the couple's Keepsake Vault.";
+            }
+          });
+        }
+      }
+
+      /* =========================================================
+         6. PURE-JS SCANNABLE QR CODE ENCODER (ISO/IEC 18004 V1-V6)
+         ========================================================= */
+      const QR_GF_EXP = new Uint8Array(512);
+      const QR_GF_LOG = new Uint8Array(256);
+      (function initGalois() {
+        let x = 1;
+        for (let i = 0; i < 255; i++) {
+          QR_GF_EXP[i] = x;
+          QR_GF_LOG[x] = i;
+          x <<= 1;
+          if (x & 0x100) x ^= 0x11d;
+        }
+        for (let i = 255; i < 512; i++) {
+          QR_GF_EXP[i] = QR_GF_EXP[i - 255];
+        }
+      })();
+
+      function qrPolyMul(p1, p2) {
+        const res = new Uint8Array(p1.length + p2.length - 1);
+        for (let i = 0; i < p1.length; i++) {
+          for (let j = 0; j < p2.length; j++) {
+            res[i + j] ^= QR_GF_EXP[QR_GF_LOG[p1[i]] + QR_GF_LOG[p2[j]]];
+          }
+        }
+        return res;
+      }
+
+      function qrReedSolomon(dataBytes, ecCount) {
+        let gen = new Uint8Array([1]);
+        for (let i = 0; i < ecCount; i++) {
+          gen = qrPolyMul(gen, new Uint8Array([1, QR_GF_EXP[i]]));
+        }
+        const msg = new Uint8Array(dataBytes.length + ecCount);
+        msg.set(dataBytes);
+        for (let i = 0; i < dataBytes.length; i++) {
+          const coef = msg[i];
+          if (coef !== 0) {
+            for (let j = 0; j < gen.length; j++) {
+              msg[i + j] ^= QR_GF_EXP[QR_GF_LOG[gen[j]] + QR_GF_LOG[coef]];
+            }
+          }
+        }
+        return msg.slice(dataBytes.length);
+      }
+
+      function generateQrMatrix(text) {
+        const bytes = new TextEncoder().encode(text);
+        const specs = [
+          { ver: 1, size: 21, total: 26, data: 19, ec: 7, align: [] },
+          { ver: 2, size: 25, total: 44, data: 34, ec: 10, align: [6, 18] },
+          { ver: 3, size: 29, total: 70, data: 55, ec: 15, align: [6, 22] },
+          { ver: 4, size: 33, total: 100, data: 80, ec: 20, align: [6, 26] },
+          { ver: 5, size: 37, total: 134, data: 108, ec: 26, align: [6, 30] },
+          { ver: 6, size: 41, total: 172, data: 136, ec: 36, align: [6, 34] }
+        ];
+
+        const cappedBytes = bytes.slice(0, 134);
+        let spec = specs[specs.length - 1];
+        for (let i = 0; i < specs.length; i++) {
+          if (cappedBytes.length + 2 <= specs[i].data) {
+            spec = specs[i];
+            break;
+          }
+        }
+
+        const bits = [];
+        const pushBits = (val, len) => {
+          for (let b = len - 1; b >= 0; b--) {
+            bits.push((val >> b) & 1);
+          }
+        };
+
+        pushBits(0b0100, 4);
+        pushBits(cappedBytes.length, 8);
+        for (let i = 0; i < cappedBytes.length; i++) {
+          pushBits(cappedBytes[i], 8);
+        }
+
+        const capacityBits = spec.data * 8;
+        pushBits(0, Math.min(4, capacityBits - bits.length));
+        while (bits.length % 8 !== 0) bits.push(0);
+
+        const dataCodewords = new Uint8Array(spec.data);
+        for (let i = 0; i < bits.length / 8; i++) {
+          let byteVal = 0;
+          for (let b = 0; b < 8; b++) byteVal = (byteVal << 1) | bits[i * 8 + b];
+          dataCodewords[i] = byteVal;
+        }
+        const pads = [0xec, 0x11];
+        let padIdx = 0;
+        for (let i = bits.length / 8; i < spec.data; i++) {
+          dataCodewords[i] = pads[padIdx % 2];
+          padIdx++;
+        }
+
+        const ecCodewords = qrReedSolomon(dataCodewords, spec.ec);
+        const allCodewords = new Uint8Array(spec.total);
+        allCodewords.set(dataCodewords);
+        allCodewords.set(ecCodewords, spec.data);
+
+        const N = spec.size;
+        const grid = Array.from({ length: N }, () => new Int8Array(N));
+        const locked = Array.from({ length: N }, () => new Uint8Array(N));
+
+        function setFunctionModule(r, c, dark) {
+          if (r < 0 || r >= N || c < 0 || c >= N) return;
+          grid[r][c] = dark ? 1 : -1;
+          locked[r][c] = 1;
+        }
+
+        function placeFinder(topR, leftC) {
+          for (let r = -1; r <= 7; r++) {
+            for (let c = -1; c <= 7; c++) {
+              const inBox = r >= 0 && r <= 6 && c >= 0 && c <= 6;
+              const isDark =
+                inBox &&
+                (r === 0 || r === 6 || c === 0 || c === 6 || (r >= 2 && r <= 4 && c >= 2 && c <= 4));
+              setFunctionModule(topR + r, leftC + c, isDark);
+            }
+          }
+        }
+
+        placeFinder(0, 0);
+        placeFinder(0, N - 7);
+        placeFinder(N - 7, 0);
+
+        for (let i = 0; i < spec.align.length; i++) {
+          for (let j = 0; j < spec.align.length; j++) {
+            const cr = spec.align[i];
+            const cc = spec.align[j];
+            if ((cr === 6 && cc === 6) || (cr === 6 && cc === N - 7) || (cr === N - 7 && cc === 6)) {
+              continue;
+            }
+            for (let r = -2; r <= 2; r++) {
+              for (let c = -2; c <= 2; c++) {
+                const dark = Math.max(Math.abs(r), Math.abs(c)) !== 1;
+                setFunctionModule(cr + r, cc + c, dark);
+              }
+            }
+          }
+        }
+
+        for (let i = 8; i < N - 8; i++) {
+          setFunctionModule(6, i, i % 2 === 0);
+          setFunctionModule(i, 6, i % 2 === 0);
+        }
+
+        setFunctionModule(N - 8, 8, true);
+        const fmt = 0x77c4;
+        const fmtCoords1 = [
+          [8, 0], [8, 1], [8, 2], [8, 3], [8, 4], [8, 5], [8, 7], [8, 8],
+          [7, 8], [5, 8], [4, 8], [3, 8], [2, 8], [1, 8], [0, 8]
+        ];
+        const fmtCoords2 = [
+          [N - 1, 8], [N - 2, 8], [N - 3, 8], [N - 4, 8], [N - 5, 8], [N - 6, 8], [N - 7, 8],
+          [8, N - 8], [8, N - 7], [8, N - 6], [8, N - 5], [8, N - 4], [8, N - 3], [8, N - 2], [8, N - 1]
+        ];
+        for (let i = 0; i < 15; i++) {
+          const bit = ((fmt >> (14 - i)) & 1) === 1;
+          setFunctionModule(fmtCoords1[i][0], fmtCoords1[i][1], bit);
+          setFunctionModule(fmtCoords2[i][0], fmtCoords2[i][1], bit);
+        }
+
+        let bitIdx = 0;
+        const totalBits = allCodewords.length * 8;
+        let up = true;
+        for (let col = N - 1; col >= 1; col -= 2) {
+          if (col === 6) col--;
+          for (let step = 0; step < N; step++) {
+            const r = up ? N - 1 - step : step;
+            for (let dx = 0; dx < 2; dx++) {
+              const c = col - dx;
+              if (!locked[r][c]) {
+                let dark = false;
+                if (bitIdx < totalBits) {
+                  const byteVal = allCodewords[bitIdx >> 3];
+                  dark = ((byteVal >> (7 - (bitIdx & 7))) & 1) === 1;
+                  bitIdx++;
+                }
+                if ((r + c) % 2 === 0) dark = !dark;
+                grid[r][c] = dark ? 1 : -1;
+              }
+            }
+          }
+          up = !up;
+        }
+
+        return grid;
+      }
+
+      /* =========================================================
+         7. LUXURY 5x7" PRINTABLE TABLE-TENT STATIONERY CANVAS
+         ========================================================= */
+      function drawTableTentCard() {
+        const canvas = document.getElementById("tableTentCanvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        const W = 1050;
+        const H = 1470;
+        canvas.width = W;
+        canvas.height = H;
+
+        const couple = (document.getElementById("coupleNamesInput").value || "Charlotte & Oliver").trim();
+        const dateVenue = (document.getElementById("weddingDateInput").value || "22 November 2026 • Cambridge").trim();
+        const prompt = (document.getElementById("tablePromptInput").value || "Scan to snap a 35mm photo & leave a 30s voice toast").trim();
+        const guestUrl = (document.getElementById("guestUrlInput").value || window.location.href).trim();
+
+        safeSet(STORAGE_KEYS.eventConfig, { couple, dateVenue, prompt, guestUrl });
+
+        const heroCouple = document.getElementById("heroCoupleDisplay");
+        const heroDate = document.getElementById("heroDateVenueDisplay");
+        if (heroCouple) heroCouple.textContent = couple;
+        if (heroDate) heroDate.textContent = dateVenue;
+
+        const bg = ctx.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, "#FFFDF9");
+        bg.addColorStop(1, "#F4ECE0");
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.strokeStyle = "#B8964E";
+        ctx.lineWidth = 8;
+        ctx.strokeRect(48, 48, W - 96, H - 96);
+
+        ctx.strokeStyle = "rgba(184, 150, 78, 0.55)";
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(68, 68, W - 136, H - 136);
+
+        ctx.fillStyle = "#8C6D2E";
+        ctx.font = "bold 24px Georgia, serif";
+        ctx.textAlign = "center";
+        ctx.fillText("OUR DIGITAL GUESTBOOK", W / 2, 165);
+
+        ctx.fillStyle = "#1E1B18";
+        ctx.font = "normal 64px Georgia, serif";
+        ctx.fillText(couple, W / 2, 255);
+
+        ctx.fillStyle = "#5C5349";
+        ctx.font = "italic 28px Georgia, serif";
+        ctx.fillText(dateVenue, W / 2, 310);
+
+        ctx.strokeStyle = "#B8964E";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(280, 355);
+        ctx.lineTo(W - 280, 355);
+        ctx.stroke();
+
+        const qrBoxSize = 520;
+        const qrBoxX = (W - qrBoxSize) / 2;
+        const qrBoxY = 415;
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
+        ctx.strokeStyle = "#B8964E";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
+
+        const matrix = generateQrMatrix(guestUrl);
+        const modCount = matrix.length;
+        const quietZone = 4;
+        const totalModules = modCount + quietZone * 2;
+        const cellSize = (qrBoxSize - 40) / totalModules;
+        const startOffset = qrBoxX + 20 + quietZone * cellSize;
+
+        ctx.fillStyle = "#1E1B18";
+        for (let r = 0; r < modCount; r++) {
+          for (let c = 0; c < modCount; c++) {
+            if (matrix[r][c] === 1) {
+              ctx.fillRect(
+                Math.round(startOffset + c * cellSize),
+                Math.round(qrBoxY + 20 + quietZone * cellSize + r * cellSize),
+                Math.ceil(cellSize),
+                Math.ceil(cellSize)
+              );
+            }
+          }
+        }
+
+        ctx.fillStyle = "#1E1B18";
+        ctx.font = "bold 30px Georgia, serif";
+        ctx.fillText("SCAN WITH YOUR PHONE CAMERA", W / 2, 1020);
+
+        ctx.fillStyle = "#5C5349";
+        ctx.font = "26px Georgia, serif";
+        ctx.fillText(prompt, W / 2, 1072);
+
+        ctx.fillStyle = "#3E5245";
+        ctx.font = "italic 24px Georgia, serif";
+        ctx.fillText("No app download required • Opens straight in your browser", W / 2, 1130);
+
+        ctx.fillStyle = "#8C6D2E";
+        ctx.font = "20px Georgia, serif";
+        ctx.fillText("WeddingPulse • Aetheria Continuum", W / 2, H - 105);
+      }
+
+      function initTableTentStudio() {
+        const defaultGuestUrl = window.location.origin + window.location.pathname + "?mode=guest";
+        const savedCfg = safeGet(STORAGE_KEYS.eventConfig, null);
+
+        const coupleIn = document.getElementById("coupleNamesInput");
+        const dateIn = document.getElementById("weddingDateInput");
+        const promptIn = document.getElementById("tablePromptInput");
+        const urlIn = document.getElementById("guestUrlInput");
+
+        if (savedCfg) {
+          if (savedCfg.couple && coupleIn) coupleIn.value = savedCfg.couple;
+          if (savedCfg.dateVenue && dateIn) dateIn.value = savedCfg.dateVenue;
+          if (savedCfg.prompt && promptIn) promptIn.value = savedCfg.prompt;
+          if (savedCfg.guestUrl && urlIn) urlIn.value = savedCfg.guestUrl;
+        } else if (urlIn) {
+          urlIn.value = defaultGuestUrl;
+        }
+
+        const refreshBtn = document.getElementById("refreshTentBtn");
+        const dlBtn = document.getElementById("downloadTentPngBtn");
+        const printBtn = document.getElementById("printTentBtn");
+
+        if (refreshBtn) refreshBtn.addEventListener("click", drawTableTentCard);
+
+        if (dlBtn) {
+          dlBtn.addEventListener("click", () => {
+            drawTableTentCard();
+            const canvas = document.getElementById("tableTentCanvas");
+            const link = document.createElement("a");
+            link.download = "WeddingPulse_Table_Tent_QR.png";
+            link.href = canvas.toDataURL("image/png");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          });
+        }
+
+        if (printBtn) {
+          printBtn.addEventListener("click", () => {
+            drawTableTentCard();
+            window.print();
+          });
+        }
+
+        drawTableTentCard();
+      }
+
+      /* =========================================================
+         8. KEEPSAKE VAULT GALLERY
+         ========================================================= */
+      async function renderKeepsakeGallery() {
+        const grid = document.getElementById("keepsakeGrid");
+        const photoCountEl = document.getElementById("statPhotoCount");
+        const audioCountEl = document.getElementById("statAudioCount");
+        const totalCountEl = document.getElementById("statTotalCount");
+        if (!grid) return;
+
+        let items = [];
+        try {
+          items = await getAllMemoryItems();
+        } catch (err) {
+          items = [];
+        }
+
+        const photos = items.filter((m) => m.type === "photo");
+        const audios = items.filter((m) => m.type === "audio");
+
+        if (photoCountEl) photoCountEl.textContent = String(photos.length);
+        if (audioCountEl) audioCountEl.textContent = String(audios.length);
+        if (totalCountEl) totalCountEl.textContent = String(items.length);
+
+        grid.innerHTML = "";
+        if (items.length === 0) {
+          grid.innerHTML =
+            '<div style="grid-column:1/-1; text-align:center; padding:28px; color:var(--ink-soft);">' +
+            "No photos or voice toasts captured yet. Try snapping a 35mm photo or recording a toast in the Guest Booth tab!" +
+            "</div>";
+          return;
+        }
+
+        items.forEach((item) => {
+          const card = document.createElement("div");
+          card.className = "keepsake-item";
+
+          const top = document.createElement("div");
+          if (item.type === "photo") {
+            const img = document.createElement("img");
+            img.src = item.dataUrl;
+            img.alt = "Guest photo from " + item.guestName;
+            top.appendChild(img);
+          } else {
+            const badge = document.createElement("div");
+            badge.style.cssText =
+              "background:var(--champagne); color:var(--gold-dark); font-weight:bold; font-size:0.78rem; padding:6px 10px; border-radius:8px; margin-bottom:8px;";
+            badge.textContent = "🎙️ 30-Second Voice Toast";
+            top.appendChild(badge);
+
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = item.dataUrl;
+            top.appendChild(audio);
+          }
+
+          const meta = document.createElement("div");
+          meta.className = "keepsake-meta";
+          const dateStr = new Date(item.createdAt || Date.now()).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+          meta.innerHTML = "<strong>" + escapeHtml(item.guestName || "Guest") + "</strong> &bull; " + dateStr;
+          top.appendChild(meta);
+
+          if (item.note) {
+            const note = document.createElement("div");
+            note.className = "keepsake-note";
+            note.textContent = '"' + item.note + '"';
+            top.appendChild(note);
+          }
+
+          const delBtn = document.createElement("button");
+          delBtn.type = "button";
+          delBtn.className = "btn-delete-small";
+          delBtn.textContent = "Remove";
+          delBtn.addEventListener("click", async () => {
+            await deleteMemoryItem(item.id);
+            renderKeepsakeGallery();
+          });
+
+          card.appendChild(top);
+          card.appendChild(delBtn);
+          grid.appendChild(card);
+        });
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      /* =========================================================
+         9. PURE-JS OFFLINE .ZIP ARCHIVE BUILDER (ZERO CDN)
+         ========================================================= */
+      const CRC32_TABLE = (function () {
+        const table = new Uint32Array(256);
+        for (let i = 0; i < 256; i++) {
+          let c = i;
+          for (let k = 0; k < 8; k++) {
+            c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+          }
+          table[i] = c >>> 0;
+        }
+        return table;
+      })();
+
+      function crc32Bytes(uint8) {
+        let crc = 0xffffffff;
+        for (let i = 0; i < uint8.length; i++) {
+          crc = CRC32_TABLE[(crc ^ uint8[i]) & 0xff] ^ (crc >>> 8);
+        }
+        return (crc ^ 0xffffffff) >>> 0;
+      }
+
+      function dataUrlToUint8Array(dataUrl) {
+        const base64 = dataUrl.split(",")[1] || "";
+        const bin = window.atob(base64);
+        const arr = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) {
+          arr[i] = bin.charCodeAt(i);
+        }
+        return arr;
+      }
+
+      function buildZipBlob(files) {
+        const encoder = new TextEncoder();
+        const localParts = [];
+        const centralParts = [];
+        let offset = 0;
+
+        files.forEach((f) => {
+          const nameBytes = encoder.encode(f.name);
+          const data = f.bytes;
+          const crc = crc32Bytes(data);
+
+          const localHeader = new ArrayBuffer(30 + nameBytes.length);
+          const lv = new DataView(localHeader);
+          lv.setUint32(0, 0x04034b50, true);
+          lv.setUint16(4, 20, true);
+          lv.setUint16(6, 0x0800, true);
+          lv.setUint16(8, 0, true);
+          lv.setUint16(10, 0, true);
+          lv.setUint16(12, 0x0021, true);
+          lv.setUint32(14, crc, true);
+          lv.setUint32(18, data.length, true);
+          lv.setUint32(22, data.length, true);
+          lv.setUint16(26, nameBytes.length, true);
+          lv.setUint16(28, 0, true);
+          new Uint8Array(localHeader, 30).set(nameBytes);
+
+          localParts.push(new Uint8Array(localHeader), data);
+
+          const centralHeader = new ArrayBuffer(46 + nameBytes.length);
+          const cv = new DataView(centralHeader);
+          cv.setUint32(0, 0x02014b50, true);
+          cv.setUint16(4, 20, true);
+          cv.setUint16(6, 20, true);
+          cv.setUint16(8, 0x0800, true);
+          cv.setUint16(10, 0, true);
+          cv.setUint16(12, 0, true);
+          cv.setUint16(14, 0x0021, true);
+          cv.setUint32(16, crc, true);
+          cv.setUint32(20, data.length, true);
+          cv.setUint32(24, data.length, true);
+          cv.setUint16(28, nameBytes.length, true);
+          cv.setUint16(30, 0, true);
+          cv.setUint16(32, 0, true);
+          cv.setUint16(34, 0, true);
+          cv.setUint16(36, 0, true);
+          cv.setUint32(38, 0, true);
+          cv.setUint32(42, offset, true);
+          new Uint8Array(centralHeader, 46).set(nameBytes);
+
+          centralParts.push(new Uint8Array(centralHeader));
+          offset += 30 + nameBytes.length + data.length;
+        });
+
+        const centralSize = centralParts.reduce((acc, p) => acc + p.length, 0);
+        const eocd = new ArrayBuffer(22);
+        const ev = new DataView(eocd);
+        ev.setUint32(0, 0x06054b50, true);
+        ev.setUint16(4, 0, true);
+        ev.setUint16(6, 0, true);
+        ev.setUint16(8, files.length, true);
+        ev.setUint16(10, files.length, true);
+        ev.setUint32(12, centralSize, true);
+        ev.setUint32(16, offset, true);
+        ev.setUint16(20, 0, true);
+
+        return new Blob([...localParts, ...centralParts, new Uint8Array(eocd)], {
+          type: "application/zip"
+        });
+      }
+
+      function initZipExporter() {
+        const zipBtn = document.getElementById("downloadZipArchiveBtn");
+        const statusEl = document.getElementById("zipStatusMsg");
+        const refreshGalleryBtn = document.getElementById("refreshGalleryBtn");
+
+        if (refreshGalleryBtn) {
+          refreshGalleryBtn.addEventListener("click", renderKeepsakeGallery);
+        }
+
+        if (zipBtn) {
+          zipBtn.addEventListener("click", async () => {
+            if (statusEl) statusEl.textContent = "Bundling your WeddingPulse .ZIP archive...";
+            try {
+              const items = await getAllMemoryItems();
+              if (items.length === 0) {
+                if (statusEl) {
+                  statusEl.textContent = "Your vault is currently empty — capture a photo or voice toast first!";
+                }
+                return;
+              }
+
+              const cfg = safeGet(STORAGE_KEYS.eventConfig, {
+                couple: "Charlotte & Oliver",
+                dateVenue: "22 November 2026"
+              });
+              const zipFiles = [];
+              let htmlRows = "";
+
+              items.forEach((item, idx) => {
+                const num = String(idx + 1).padStart(2, "0");
+                const safeGuest = (item.guestName || "Guest").replace(/[^a-zA-Z0-9_-]/g, "_");
+                if (item.type === "photo") {
+                  const filename = "photos/" + num + "_" + safeGuest + ".jpg";
+                  zipFiles.push({ name: filename, bytes: dataUrlToUint8Array(item.dataUrl) });
+                  htmlRows +=
+                    '<div style="border:1px solid #B8964E; padding:12px; margin-bottom:14px; border-radius:8px;">' +
+                    '<img src="' + filename + '" style="max-width:340px; display:block; margin-bottom:8px;" />' +
+                    "<strong>" + escapeHtml(item.guestName) + "</strong>: " + escapeHtml(item.note || "") +
+                    "</div>";
+                } else {
+                  const ext = (item.mimeType || "").includes("mp4") ? "m4a" : "webm";
+                  const filename = "voice_toasts/" + num + "_" + safeGuest + "." + ext;
+                  zipFiles.push({ name: filename, bytes: dataUrlToUint8Array(item.dataUrl) });
+                  htmlRows +=
+                    '<div style="border:1px solid #B8964E; padding:12px; margin-bottom:14px; border-radius:8px;">' +
+                    "<strong>🎙️ Voice Toast from " + escapeHtml(item.guestName) + "</strong> (" + filename + ")<br/>" +
+                    "<em>" + escapeHtml(item.note || "") + "</em>" +
+                    "</div>";
+                }
+              });
+
+              const indexHtml =
+                "<!DOCTYPE html><html><head><meta charset='utf-8'><title>" +
+                escapeHtml(cfg.couple) +
+                " Keepsake Guestbook</title></head>" +
+                "<body style='font-family:Georgia,serif; max-width:760px; margin:24px auto; padding:16px; background:#FAF6F0; color:#1E1B18;'>" +
+                "<h1>" + escapeHtml(cfg.couple) + " — WeddingPulse Keepsakes</h1>" +
+                "<p>" + escapeHtml(cfg.dateVenue) + "</p><hr/>" +
+                htmlRows +
+                "</body></html>";
+
+              zipFiles.push({
+                name: "WeddingPulse_Guestbook_Index.html",
+                bytes: new TextEncoder().encode(indexHtml)
+              });
+
+              const zipBlob = buildZipBlob(zipFiles);
+              const link = document.createElement("a");
+              link.download = "WeddingPulse_Keepsake_Archive.zip";
+              link.href = URL.createObjectURL(zipBlob);
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+
+              if (statusEl) {
+                statusEl.textContent = "Downloaded WeddingPulse_Keepsake_Archive.zip (" + items.length + " memories)!";
+              }
+            } catch (err) {
+              if (statusEl) statusEl.textContent = "Could not build archive — please try again.";
+            }
+          });
+        }
+      }
+
+      /* =========================================================
+         10. BOOTSTRAP APPLICATION
+         ========================================================= */
+      function boot() {
+        registerInlineManifest();
+        initAuthAndNavigation();
+        initPhotoBooth();
+        initAudioBooth();
+        initTableTentStudio();
+        renderKeepsakeGallery();
+        initZipExporter();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>
 
