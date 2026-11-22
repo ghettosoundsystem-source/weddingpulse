@@ -102,16 +102,16 @@
     }
 
     /* =========================================================
-       HOST PAYWALL & LOGIN OVERLAY
+       HOST PAYWALL, GUEST ACCESS LOGIN & COUPLE LOGIN OVERLAY
        ========================================================= */
     #hostGateOverlay {
       position: fixed;
       inset: 0;
       z-index: 9000;
-      background: rgba(24, 20, 17, 0.86);
+      background: rgba(24, 20, 17, 0.88);
       backdrop-filter: blur(6px);
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       padding: 16px;
       overflow-y: auto;
@@ -123,11 +123,12 @@
 
     .gate-card {
       width: 100%;
-      max-width: 470px;
+      max-width: 480px;
+      margin: auto;
       background: linear-gradient(180deg, var(--paper) 0%, var(--ivory) 100%);
       border: 2px solid var(--gold);
       border-radius: 22px;
-      padding: 26px 22px;
+      padding: 22px 20px;
       box-shadow: 0 28px 70px rgba(0, 0, 0, 0.55), inset 0 0 0 5px rgba(184, 150, 78, 0.16);
       text-align: center;
     }
@@ -143,29 +144,87 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .gate-card h1 {
       margin: 2px 0 6px;
-      font-size: 1.9rem;
+      font-size: 1.85rem;
       font-weight: normal;
       letter-spacing: 0.03em;
       color: var(--ink);
     }
 
     .gate-sub {
-      margin: 0 0 16px;
-      font-size: 0.92rem;
+      margin: 0 0 14px;
+      font-size: 0.9rem;
       color: var(--ink-soft);
-      line-height: 1.5;
+      line-height: 1.45;
+    }
+
+    .guest-entry-box {
+      background: var(--sage-light);
+      border: 1.5px solid rgba(62, 82, 69, 0.45);
+      border-radius: 14px;
+      padding: 13px;
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .guest-entry-box strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--sage);
+      margin-bottom: 4px;
+    }
+
+    .guest-entry-box p {
+      margin: 0 0 9px;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+
+    .guest-pass-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 8px;
+    }
+
+    .guest-entry-box input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(62, 82, 69, 0.4);
+      border-radius: 9px;
+      font-size: 0.92rem;
+      background: #FFF;
+      color: var(--ink);
+    }
+
+    .btn-guest-enter {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--sage);
+      color: #FFFDF9;
+      border: 1px solid var(--gold);
+      border-radius: 9px;
+      font-size: 0.88rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .guest-gate-status {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      color: var(--burgundy);
+      font-weight: bold;
     }
 
     .gate-perks {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 16px;
+      gap: 7px;
+      margin-bottom: 12px;
       text-align: left;
     }
 
@@ -173,47 +232,33 @@
       background: var(--paper);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 8px 10px;
-      font-size: 0.8rem;
+      padding: 7px 10px;
+      font-size: 0.78rem;
       color: var(--ink);
     }
 
     .btn-gold-cta {
       display: block;
       width: 100%;
-      padding: 15px 16px;
+      padding: 14px 16px;
       background: linear-gradient(135deg, #2B2520 0%, #161310 100%);
       color: var(--gold-light);
       border: 1.5px solid var(--gold);
       border-radius: 12px;
-      font-size: 1.02rem;
+      font-size: 1rem;
       font-weight: bold;
       text-decoration: none;
       cursor: pointer;
       box-shadow: 0 8px 22px rgba(22, 19, 16, 0.28);
-      margin-bottom: 8px;
-    }
-
-    .btn-guest-preview {
-      display: block;
-      width: 100%;
-      padding: 11px 14px;
-      background: var(--sage-light);
-      color: var(--sage);
-      border: 1px solid rgba(62, 82, 69, 0.35);
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
     }
 
     .divider-line {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin: 12px 0;
-      font-size: 0.75rem;
+      margin: 10px 0;
+      font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--ink-soft);
@@ -558,6 +603,22 @@
       color: var(--ink);
     }
 
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--ink);
+      margin: 8px 0 12px;
+      cursor: pointer;
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--sage);
+    }
+
     .password-input-wrap {
       position: relative;
       display: flex;
@@ -845,7 +906,7 @@
     }
 
     /* =========================================================
-       TAB 4: ZIP ARCHIVE & HOST ACCOUNT CREDENTIALS
+       TAB 4: ZIP ARCHIVE & DUAL PASSWORD SETTINGS
        ========================================================= */
     .account-box {
       background: var(--ivory);
@@ -855,9 +916,17 @@
       margin-bottom: 16px;
     }
 
-    .security-note-box {
+    .guest-pass-box {
       background: var(--sage-light);
-      border: 1px solid rgba(62, 82, 69, 0.32);
+      border: 1.5px solid rgba(62, 82, 69, 0.45);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .security-note-box {
+      background: var(--paper);
+      border: 1px solid var(--border);
       border-radius: 12px;
       padding: 12px 14px;
       font-size: 0.82rem;
@@ -880,7 +949,8 @@
       }
       .booth-grid,
       .qr-layout,
-      .login-fields {
+      .login-fields,
+      .guest-pass-row {
         grid-template-columns: 1fr;
       }
     }
@@ -919,7 +989,7 @@
 <body>
 
   <!-- =========================================================
-       HOST ACTIVATION & LOGIN OVERLAY
+       HOST PAYWALL, GUEST ACCESS LOGIN & COUPLE LOGIN OVERLAY
        ========================================================= -->
   <div id="hostGateOverlay" role="dialog" aria-modal="true" aria-labelledby="gateHeading">
     <div class="gate-card">
@@ -928,6 +998,23 @@
       <p class="gate-sub">
         Turn every guest's smartphone into a 35mm disposable camera and 30-second audio guestbook—no app download required.
       </p>
+
+      <!-- GUEST ACCESS PASSWORD LOGIN (GIVEN BY COUPLE TO THEIR GUESTS) -->
+      <div class="guest-entry-box">
+        <strong>🎟️ Wedding Guest Entry</strong>
+        <p id="guestEntryHelpText">
+          Enter the Guest Access Password shared by the couple (or tap Enter if no password is set).
+        </p>
+        <div class="guest-pass-row">
+          <input type="text" id="guestAccessCodeInput" placeholder="Guest Password (e.g. LOVE2026)" autocomplete="off" />
+          <button type="button" id="openGuestDemoBtn" class="btn-guest-enter">
+            Enter Guestbook &rarr;
+          </button>
+        </div>
+        <div id="guestGateStatusMsg" class="guest-gate-status" role="status"></div>
+      </div>
+
+      <div class="divider-line">Or Buy Host Pass for Your Wedding</div>
 
       <div class="gate-perks">
         <div class="perk-item">📸 35mm Film-Style Photos</div>
@@ -945,16 +1032,12 @@
         Unlock Host Event Pass — &pound;29.99 via Stripe
       </a>
 
-      <button type="button" id="openGuestDemoBtn" class="btn-guest-preview">
-        Open Guest Photo &amp; Voice Booth (Guest View)
-      </button>
-
-      <div class="divider-line">Couple Account or Developer Login</div>
+      <div class="divider-line">Couple Host Admin or Developer Login</div>
 
       <div class="login-panel">
         <div class="login-fields">
           <input type="text" id="loginUserField" placeholder="Couple Username" autocomplete="username" />
-          <input type="password" id="loginPassField" placeholder="Your Password" autocomplete="current-password" />
+          <input type="password" id="loginPassField" placeholder="Host / Dev Password" autocomplete="current-password" />
         </div>
         <button type="button" id="hostLoginBtn" class="btn-unlock">
           Enter Host Studio
@@ -975,20 +1058,20 @@
       </div>
       <div class="topbar-actions">
         <span id="roleStatusPill" class="status-pill">Guest Booth Mode</span>
-        <button type="button" id="topbarChangePassBtn" class="btn-outline" style="display:none;">🔑 Change Password</button>
+        <button type="button" id="topbarChangePassBtn" class="btn-outline" style="display:none;">🔑 Set / Change Passwords</button>
         <button type="button" id="switchRoleBtn" class="btn-outline">🔑 Host Login</button>
       </div>
     </header>
 
     <div id="firstTimePasswordBanner" role="status">
       <div>
-        <strong style="color:var(--gold-light);">🎉 Event Pass Unlocked! Create Your Private Password</strong>
+        <strong style="color:var(--gold-light);">🎉 Event Pass Unlocked! Set Your Passwords</strong>
         <div style="font-size:0.84rem; margin-top:2px; color:#EFE6D5;">
-          Set your own Couple Username &amp; Password so only you can open your Keepsake Vault.
+          Set a <strong>Guest Access Password</strong> to share with your guests, plus your private <strong>Couple Host Password</strong>.
         </div>
       </div>
       <button type="button" id="bannerSetPassBtn" class="btn-outline" style="background:var(--gold); color:#1E1B18; border-color:var(--gold-light); font-weight:bold;">
-        Set My Password &rarr;
+        Set Passwords &rarr;
       </button>
     </div>
 
@@ -1008,7 +1091,7 @@
       <button type="button" class="nav-tab active" data-tab="boothTab">📸 Guest Booth</button>
       <button type="button" class="nav-tab locked-tab" data-tab="qrTab" data-host-only="true">🎨 Event &amp; QR Card</button>
       <button type="button" class="nav-tab locked-tab" data-tab="galleryTab" data-host-only="true">🥂 Keepsake Vault</button>
-      <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Password</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Passwords</button>
     </nav>
 
     <!-- =======================================================
@@ -1122,7 +1205,7 @@
       <div class="section-head">
         <div>
           <h3>Customise Couple Names, Venue &amp; Date + QR Table Card</h3>
-          <p>Personalise your wedding banner and 5&times;7&quot; table stationery in bold luxury typography. Your QR code automatically carries your names, venue, and date to every guest's phone.</p>
+          <p>Personalise your wedding banner and 5&times;7&quot; table stationery in bold luxury typography. Your QR code automatically carries your names, venue, date, and guest access settings.</p>
         </div>
       </div>
 
@@ -1158,8 +1241,13 @@
             <input type="text" id="tablePromptInput" value="Scan to snap a 35mm photo &amp; leave a 30s voice toast" />
           </div>
 
+          <label class="checkbox-row" for="showGuestPassOnCardChk">
+            <input type="checkbox" id="showGuestPassOnCardChk" checked />
+            <span>Print Guest Access Password on Table Card (when set)</span>
+          </label>
+
           <div class="field-group">
-            <label for="guestUrlInput">Auto-Synced Guest QR Link (Includes Names, Venue &amp; Date)</label>
+            <label for="guestUrlInput">Auto-Synced Guest QR Link</label>
             <input type="url" id="guestUrlInput" readonly style="background:#F7F2E8; color:#5C5349; font-size:0.8rem;" />
           </div>
 
@@ -1214,18 +1302,38 @@
     </section>
 
     <!-- =======================================================
-         TAB 4: OFFLINE .ZIP ARCHIVE & BUYER PASSWORD SETTINGS
+         TAB 4: OFFLINE .ZIP ARCHIVE & BUYER / GUEST PASSWORDS
          ======================================================= -->
     <section id="exportTab" class="panel-card">
       <div class="section-head">
         <div>
-          <h3>Offline Keepsake .ZIP Archive &amp; Buyer Password</h3>
-          <p>Download your complete wedding keepsake bundle or change your couple login username and password.</p>
+          <h3>Guest Access Password, Couple Login &amp; .ZIP Archive</h3>
+          <p>Set the simple Guest Access Password you share with wedding guests, plus your private Couple Host Password.</p>
         </div>
       </div>
 
+      <!-- 1. GUEST ACCESS PASSWORD (SHARED WITH WEDDING GUESTS) -->
+      <div class="guest-pass-box">
+        <strong style="font-size:1.06rem; color:var(--sage);">🎟️ 1. Guest Event Access Password (Share with Your Guests)</strong>
+        <p id="guestPassSummary" style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);"></p>
+
+        <div class="field-group">
+          <label for="guestAccessPasswordSetInput">Guest Access Password (e.g. LOVE2026 or SMITH26 — leave blank for open guest entry)</label>
+          <div class="password-input-wrap">
+            <input type="text" id="guestAccessPasswordSetInput" placeholder="e.g. LOVE2026" autocomplete="off" />
+            <button type="button" id="clearGuestPassBtn" class="btn-toggle-eye">Clear</button>
+          </div>
+        </div>
+
+        <button type="button" id="saveGuestPassBtn" class="btn-action-sage">
+          ✓ Save Guest Access Password
+        </button>
+        <div id="guestPassSaveMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+      </div>
+
+      <!-- 2. COUPLE HOST ADMIN USERNAME & PASSWORD (PRIVATE VAULT LOGIN) -->
       <div class="account-box">
-        <strong style="font-size:1.05rem; color:var(--ink);">🔑 Couple Login &amp; Change Password</strong>
+        <strong style="font-size:1.06rem; color:var(--ink);">🔑 2. Couple Host Admin Password (Private Vault &amp; .ZIP Login)</strong>
         <p id="hostAccountSummary" style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);"></p>
 
         <div id="hostAccountEditor">
@@ -1236,35 +1344,36 @@
 
           <div class="login-fields">
             <div class="field-group" style="margin-bottom:0;">
-              <label for="editHostPassInput">New Password (min 4 characters)</label>
+              <label for="editHostPassInput">New Host Password (min 4 characters)</label>
               <div class="password-input-wrap">
-                <input type="password" id="editHostPassInput" placeholder="Enter new password" autocomplete="new-password" />
+                <input type="password" id="editHostPassInput" placeholder="Enter new host password" autocomplete="new-password" />
                 <button type="button" class="btn-toggle-eye" data-target="editHostPassInput">Show</button>
               </div>
             </div>
 
             <div class="field-group" style="margin-bottom:0;">
-              <label for="confirmHostPassInput">Confirm New Password</label>
+              <label for="confirmHostPassInput">Confirm New Host Password</label>
               <div class="password-input-wrap">
-                <input type="password" id="confirmHostPassInput" placeholder="Re-enter new password" autocomplete="new-password" />
+                <input type="password" id="confirmHostPassInput" placeholder="Re-enter host password" autocomplete="new-password" />
                 <button type="button" class="btn-toggle-eye" data-target="confirmHostPassInput">Show</button>
               </div>
             </div>
           </div>
 
-          <button type="button" id="saveHostAccountBtn" class="btn-action-sage" style="margin-top:12px;">
-            ✓ Save New Username &amp; Password
+          <button type="button" id="saveHostAccountBtn" class="btn-action-dark" style="margin-top:12px;">
+            ✓ Save Couple Username &amp; Host Password
           </button>
         </div>
         <div id="hostAccountSaveMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
 
         <div class="security-note-box">
-          <strong>🔒 How Your Wedding Vault Is Protected:</strong> Your password is hashed with SHA-256 directly on your device (never saved in plain text), and all guest photos and voice toasts stay stored locally on your device rather than uploaded to a public server. Always download your <strong>.ZIP Keepsake Archive</strong> below after your wedding as a permanent backup.
+          <strong>🔒 How Your Wedding Vault Is Protected:</strong> Your Couple Host Password is hashed with SHA-256 on your device (never stored in plain text), guests only ever see the Guest Booth (never your Keepsake Vault or .ZIP export), and all photos and voice toasts remain locally on your device rather than uploaded to a public cloud.
         </div>
       </div>
 
+      <!-- 3. OFFLINE .ZIP KEEPSAKE BUNDLE -->
       <div class="account-box">
-        <strong style="font-size:1.05rem; color:var(--ink);">📦 Complete Offline Keepsake Bundle</strong>
+        <strong style="font-size:1.05rem; color:var(--ink);">📦 3. Complete Offline Keepsake Bundle (.ZIP)</strong>
         <p style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);">
           Packages every guest photo (.jpg), every 30-second voice toast (.webm / .m4a), and an illustrated Guestbook Index (.html) into a single downloadable .ZIP archive.
         </p>
@@ -1292,8 +1401,9 @@
 
       const STORAGE_KEYS = {
         hostAccount: "wp_paid_host_account_v2",
+        guestPasscode: "wp_guest_access_code_v1",
         activeRole: "wp_active_role_v1",
-        eventConfig: "wp_event_config_v2"
+        eventConfig: "wp_event_config_v3"
       };
 
       const DB_NAME = "WeddingPulseKeepsakesDB";
@@ -1432,7 +1542,7 @@
       }
 
       /* =========================================================
-         3. HOST & DEVELOPER AUTHENTICATION + BUYER PASSWORD MANAGER
+         3. HOST, GUEST ACCESS PASSWORD & DEVELOPER AUTHENTICATION
          ========================================================= */
       let currentRole = "GUEST";
 
@@ -1441,6 +1551,54 @@
         const part = () =>
           Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
         return "WP-" + part() + "-" + part();
+      }
+
+      function getActiveGuestPasscode() {
+        const params = new URLSearchParams(window.location.search);
+        const urlCode = params.get("gp");
+        if (urlCode) {
+          safeSet(STORAGE_KEYS.guestPasscode, urlCode.trim());
+          return urlCode.trim();
+        }
+        return (safeGet(STORAGE_KEYS.guestPasscode, "") || "").trim();
+      }
+
+      function refreshGuestGateUI() {
+        const guestCode = getActiveGuestPasscode();
+        const helpEl = document.getElementById("guestEntryHelpText");
+        const guestInput = document.getElementById("guestAccessCodeInput");
+        const guestSummary = document.getElementById("guestPassSummary");
+        const guestSetInput = document.getElementById("guestAccessPasswordSetInput");
+
+        if (guestCode) {
+          if (helpEl) {
+            helpEl.textContent = "This wedding requires the couple's Guest Access Password to enter the Photo & Voice Booth.";
+          }
+          if (guestInput) {
+            guestInput.placeholder = "Enter Guest Password";
+          }
+          if (guestSummary) {
+            guestSummary.innerHTML =
+              "Active Guest Access Password: <code>" +
+              escapeHtml(guestCode) +
+              "</code> — share this with your wedding guests so they can log right into the Guest Booth.";
+          }
+        } else {
+          if (helpEl) {
+            helpEl.textContent = "No Guest Password is set yet — guests can tap Enter Guestbook straight away, or you can set one in the Host Studio.";
+          }
+          if (guestInput) {
+            guestInput.placeholder = "Optional (no password set)";
+          }
+          if (guestSummary) {
+            guestSummary.innerHTML =
+              "Currently <strong>Open Guest Entry</strong> (no password required). Type a password below (e.g. <code>LOVE2026</code>) if you want guests to enter a password before using the booth.";
+          }
+        }
+
+        if (guestSetInput && document.activeElement !== guestSetInput) {
+          guestSetInput.value = guestCode;
+        }
       }
 
       function applyRoleUI(role) {
@@ -1474,24 +1632,35 @@
           }
         }
 
+        refreshGuestGateUI();
+
         if (isHost) {
           if (overlay) overlay.classList.add("hidden");
           if (guestBanner) guestBanner.classList.remove("visible");
           if (switchBtn) switchBtn.textContent = "🔒 Lock Host Vault";
+          if (changePassBtn) changePassBtn.style.display = "inline-block";
+          if (acctEditor) acctEditor.style.display = "block";
+
+          const acct = safeGet(STORAGE_KEYS.hostAccount, null);
 
           if (role === "DEV") {
             if (pill) pill.textContent = "Developer Admin";
-            if (changePassBtn) changePassBtn.style.display = "none";
             if (firstPassBanner) firstPassBanner.classList.remove("visible");
             if (acctSummary) {
-              acctSummary.innerHTML =
-                "Signed in as <strong>Developer Admin</strong>. Paying buyers see the personal Username &amp; Password creator right here when they unlock via Stripe.";
+              if (acct && acct.isPaid && !acct.needsCustomPassword) {
+                acctSummary.innerHTML =
+                  "Developer Mode active &bull; Configured Couple Username: <code>" +
+                  escapeHtml(acct.username) +
+                  "</code> (SHA-256 Protected). You can edit or test buyer credentials below.";
+              } else {
+                acctSummary.innerHTML =
+                  "Developer Mode active &bull; Use the fields below to set or test a Couple Username &amp; Host Password.";
+              }
             }
-            if (acctEditor) acctEditor.style.display = "none";
+            const uIn = document.getElementById("editHostUserInput");
+            if (uIn && !uIn.value) uIn.value = (acct && acct.username) || "Newlyweds";
           } else {
-            const acct = safeGet(STORAGE_KEYS.hostAccount, null);
             if (pill) pill.textContent = "Host: " + (acct ? acct.username : "Couple");
-            if (changePassBtn) changePassBtn.style.display = "inline-block";
             if (firstPassBanner) {
               if (acct && acct.needsCustomPassword) {
                 firstPassBanner.classList.add("visible");
@@ -1501,15 +1670,14 @@
             }
             if (acctSummary && acct) {
               const statusText = acct.needsCustomPassword
-                ? "Temporary unlock active — please choose your own personal Username &amp; Password below."
+                ? "Temporary unlock active — set your own Couple Username &amp; Host Password below."
                 : "Active Couple Username: <code>" +
                   escapeHtml(acct.username) +
-                  "</code> &bull; Password: <strong>Protected (SHA-256 Hashed)</strong>";
+                  "</code> &bull; Host Password: <strong>Protected (SHA-256 Hashed)</strong>";
               acctSummary.innerHTML = statusText;
               const uIn = document.getElementById("editHostUserInput");
               if (uIn && !uIn.value) uIn.value = acct.username;
             }
-            if (acctEditor) acctEditor.style.display = "block";
           }
         } else {
           if (pill) pill.textContent = "Guest Booth Mode";
@@ -1540,7 +1708,9 @@
         const stripeBtn = document.getElementById("stripeCheckoutBtn");
         if (stripeBtn) stripeBtn.href = STRIPE_EVENT_LINK;
 
-        document.querySelectorAll(".btn-toggle-eye").forEach((btn) => {
+        refreshGuestGateUI();
+
+        document.querySelectorAll(".btn-toggle-eye[data-target]").forEach((btn) => {
           btn.addEventListener("click", () => {
             const targetId = btn.getAttribute("data-target");
             const input = document.getElementById(targetId);
@@ -1590,9 +1760,10 @@
           if (msg) {
             msg.style.color = "#3E5245";
             msg.textContent =
-              "Event unlocked! Enter your own Couple Username and Password above so only you can access your vault.";
+              "Event unlocked! Set your Guest Access Password and Couple Host Password above.";
           }
         } else if (isGuestQrScan) {
+          // Official QR table-tent scan unlocks Guest Booth directly
           const overlay = document.getElementById("hostGateOverlay");
           if (overlay) overlay.classList.add("hidden");
           applyRoleUI("GUEST");
@@ -1606,9 +1777,22 @@
           }
         }
 
+        // Guest Entry Button (checks Guest Access Password if couple set one)
         const guestPreviewBtn = document.getElementById("openGuestDemoBtn");
         if (guestPreviewBtn) {
           guestPreviewBtn.addEventListener("click", () => {
+            const requiredCode = getActiveGuestPasscode();
+            const enteredCode = (document.getElementById("guestAccessCodeInput").value || "").trim();
+            const guestStatus = document.getElementById("guestGateStatusMsg");
+
+            if (requiredCode && enteredCode.toLowerCase() !== requiredCode.toLowerCase()) {
+              if (guestStatus) {
+                guestStatus.textContent = "Incorrect Guest Access Password — please ask the couple or check your table card.";
+              }
+              return;
+            }
+
+            if (guestStatus) guestStatus.textContent = "";
             const overlay = document.getElementById("hostGateOverlay");
             if (overlay) overlay.classList.add("hidden");
             applyRoleUI("GUEST");
@@ -1626,8 +1810,8 @@
 
         const goToPasswordEditor = () => {
           switchToTab("exportTab");
-          const passInput = document.getElementById("editHostPassInput");
-          if (passInput) passInput.focus();
+          const guestSetInput = document.getElementById("guestAccessPasswordSetInput");
+          if (guestSetInput) guestSetInput.focus();
         };
 
         const topbarChangePassBtn = document.getElementById("topbarChangePassBtn");
@@ -1635,6 +1819,7 @@
         if (topbarChangePassBtn) topbarChangePassBtn.addEventListener("click", goToPasswordEditor);
         if (bannerSetPassBtn) bannerSetPassBtn.addEventListener("click", goToPasswordEditor);
 
+        // Couple Host / Developer Login
         const loginBtn = document.getElementById("hostLoginBtn");
         if (loginBtn) {
           loginBtn.addEventListener("click", async () => {
@@ -1663,7 +1848,7 @@
 
             if (statusEl) {
               statusEl.textContent =
-                "Invalid username or password. Unlock your £29.99 Event Pass via Stripe or enter a valid login.";
+                "Invalid username or host password. Guests should enter the Guest Password in the green box above.";
             }
           });
         }
@@ -1672,18 +1857,55 @@
         const bannerHostBtn = document.getElementById("bannerHostBtn");
         const openGate = () => {
           safeSet(STORAGE_KEYS.activeRole, null);
+          refreshGuestGateUI();
           const overlay = document.getElementById("hostGateOverlay");
           if (overlay) overlay.classList.remove("hidden");
         };
         if (switchBtn) switchBtn.addEventListener("click", openGate);
         if (bannerHostBtn) bannerHostBtn.addEventListener("click", openGate);
 
+        // Save Guest Access Password (shared with guests)
+        const saveGuestPassBtn = document.getElementById("saveGuestPassBtn");
+        const clearGuestPassBtn = document.getElementById("clearGuestPassBtn");
+        if (clearGuestPassBtn) {
+          clearGuestPassBtn.addEventListener("click", () => {
+            const inp = document.getElementById("guestAccessPasswordSetInput");
+            if (inp) inp.value = "";
+          });
+        }
+        if (saveGuestPassBtn) {
+          saveGuestPassBtn.addEventListener("click", () => {
+            const inp = document.getElementById("guestAccessPasswordSetInput");
+            const msg = document.getElementById("guestPassSaveMsg");
+            const newGuestCode = (inp ? inp.value : "").trim();
+            safeSet(STORAGE_KEYS.guestPasscode, newGuestCode);
+            refreshGuestGateUI();
+            drawTableTentCard();
+
+            if (msg) {
+              msg.style.color = "#3E5245";
+              if (newGuestCode) {
+                msg.textContent =
+                  "Saved! Give guests the password '" +
+                  newGuestCode +
+                  "' so they can log straight into the Guest Booth.";
+              } else {
+                msg.textContent = "Cleared! Guest Booth is now open without requiring a guest password.";
+              }
+            }
+          });
+        }
+
+        // Save Couple Host Admin Username & Password
         const saveAcctBtn = document.getElementById("saveHostAccountBtn");
         if (saveAcctBtn) {
           saveAcctBtn.addEventListener("click", async () => {
-            const acct = safeGet(STORAGE_KEYS.hostAccount, null);
             const msg = document.getElementById("hostAccountSaveMsg");
-            if (!acct || !acct.isPaid) return;
+            let acct = safeGet(STORAGE_KEYS.hostAccount, null) || {
+              isPaid: true,
+              username: "Newlyweds",
+              createdAt: Date.now()
+            };
 
             const newU = (document.getElementById("editHostUserInput").value || "").trim();
             const newP = (document.getElementById("editHostPassInput").value || "").trim();
@@ -1699,7 +1921,7 @@
             if (newP.length < 4) {
               if (msg) {
                 msg.style.color = "#7A2E3A";
-                msg.textContent = "Please choose a password with at least 4 characters.";
+                msg.textContent = "Please choose a Host Password with at least 4 characters.";
               }
               return;
             }
@@ -1713,6 +1935,7 @@
 
             const newSalt = generateRandomSalt();
             const newHash = await hashPasswordWithSalt(newP, newSalt);
+            acct.isPaid = true;
             acct.username = newU;
             acct.salt = newSalt;
             acct.passwordHash = newHash;
@@ -1721,12 +1944,14 @@
 
             document.getElementById("editHostPassInput").value = "";
             document.getElementById("confirmHostPassInput").value = "";
-            applyRoleUI("CUSTOMER");
+            applyRoleUI(currentRole);
 
             if (msg) {
               msg.style.color = "#3E5245";
               msg.textContent =
-                "Password updated and encrypted! Use username '" + newU + "' with your new password to unlock your vault.";
+                "Couple Host Password saved & encrypted! Use username '" +
+                newU +
+                "' with your new password to unlock your private vault.";
             }
           });
         }
@@ -2268,7 +2493,7 @@
       /* =========================================================
          7. COUPLE EVENT CUSTOMISER & 5x7" PRINTABLE QR TABLE CARD
          ========================================================= */
-      function buildGuestQrLink(couple, venue, dateStr, fontKey) {
+      function buildGuestQrLink(couple, venue, dateStr, fontKey, guestCode) {
         const base = window.location.origin + window.location.pathname;
         const qp = new URLSearchParams();
         qp.set("mode", "guest");
@@ -2276,6 +2501,7 @@
         if (venue) qp.set("v", venue);
         if (dateStr) qp.set("d", dateStr);
         if (fontKey) qp.set("f", fontKey);
+        if (guestCode) qp.set("gp", guestCode);
         return base + "?" + qp.toString();
       }
 
@@ -2362,12 +2588,15 @@
         const dateStr = (document.getElementById("weddingDateInput").value || "Saturday, 22 November 2026").trim();
         const fontKey = (document.getElementById("fancyFontSelect").value || "royal").trim();
         const prompt = (document.getElementById("tablePromptInput").value || "Scan to snap a 35mm photo & leave a 30s voice toast").trim();
+        const showPassChk = document.getElementById("showGuestPassOnCardChk");
+        const showGuestPass = showPassChk ? showPassChk.checked : true;
+        const guestCode = getActiveGuestPasscode();
 
-        const guestUrl = buildGuestQrLink(couple, venue, dateStr, fontKey);
+        const guestUrl = buildGuestQrLink(couple, venue, dateStr, fontKey, guestCode);
         const urlIn = document.getElementById("guestUrlInput");
         if (urlIn) urlIn.value = guestUrl;
 
-        safeSet(STORAGE_KEYS.eventConfig, { couple, venue, dateStr, fontKey, prompt, guestUrl });
+        safeSet(STORAGE_KEYS.eventConfig, { couple, venue, dateStr, fontKey, prompt, showGuestPass, guestUrl });
         applyWeddingBrandingToHero(couple, venue, dateStr, fontKey);
 
         const bg = ctx.createLinearGradient(0, 0, 0, H);
@@ -2387,24 +2616,24 @@
         ctx.fillStyle = "#8C6D2E";
         ctx.font = "bold 23px Georgia, serif";
         ctx.textAlign = "center";
-        ctx.fillText("OUR DIGITAL GUESTBOOK", W / 2, 145);
+        ctx.fillText("OUR DIGITAL GUESTBOOK", W / 2, 140);
 
         const fonts = getCanvasFontsForStyle(fontKey);
         const displayCouple = fontKey === "classic" ? couple.toUpperCase() : couple;
 
         ctx.fillStyle = "#1E1B18";
         ctx.font = fonts.coupleFont;
-        const afterCoupleY = drawWrappedCenterText(ctx, displayCouple, W / 2, 232, W - 180, 68);
+        const afterCoupleY = drawWrappedCenterText(ctx, displayCouple, W / 2, 224, W - 180, 66);
 
         ctx.fillStyle = "#1E1B18";
         ctx.font = fonts.venueFont;
-        const afterVenueY = drawWrappedCenterText(ctx, venue, W / 2, afterCoupleY + 52, W - 200, 38);
+        const afterVenueY = drawWrappedCenterText(ctx, venue, W / 2, afterCoupleY + 50, W - 200, 38);
 
         ctx.fillStyle = "#8C6D2E";
         ctx.font = fonts.dateFont;
-        ctx.fillText(dateStr, W / 2, afterVenueY + 42);
+        ctx.fillText(dateStr, W / 2, afterVenueY + 40);
 
-        const ruleY = Math.min(435, afterVenueY + 72);
+        const ruleY = Math.min(425, afterVenueY + 68);
         ctx.strokeStyle = "#B8964E";
         ctx.lineWidth = 2.5;
         ctx.beginPath();
@@ -2412,9 +2641,9 @@
         ctx.lineTo(W - 270, ruleY);
         ctx.stroke();
 
-        const qrBoxSize = 490;
+        const qrBoxSize = 470;
         const qrBoxX = (W - qrBoxSize) / 2;
-        const qrBoxY = ruleY + 34;
+        const qrBoxY = ruleY + 30;
 
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
@@ -2443,22 +2672,28 @@
           }
         }
 
-        const footerTopY = qrBoxY + qrBoxSize + 58;
+        const footerTopY = qrBoxY + qrBoxSize + 52;
         ctx.fillStyle = "#1E1B18";
         ctx.font = "bold 29px Georgia, serif";
         ctx.fillText("SCAN WITH YOUR PHONE CAMERA", W / 2, footerTopY);
 
         ctx.fillStyle = "#5C5349";
         ctx.font = "25px Georgia, serif";
-        ctx.fillText(prompt, W / 2, footerTopY + 48);
+        ctx.fillText(prompt, W / 2, footerTopY + 46);
 
-        ctx.fillStyle = "#3E5245";
-        ctx.font = "italic 23px Georgia, serif";
-        ctx.fillText("No app download required • Opens straight in your browser", W / 2, footerTopY + 98);
+        if (showGuestPass && guestCode) {
+          ctx.fillStyle = "#3E5245";
+          ctx.font = "bold 26px Georgia, serif";
+          ctx.fillText("Guest Access Password: " + guestCode, W / 2, footerTopY + 96);
+        } else {
+          ctx.fillStyle = "#3E5245";
+          ctx.font = "italic 23px Georgia, serif";
+          ctx.fillText("No app download required • Opens straight in your browser", W / 2, footerTopY + 94);
+        }
 
         ctx.fillStyle = "#8C6D2E";
         ctx.font = "20px Georgia, serif";
-        ctx.fillText("WeddingPulse • Aetheria Continuum", W / 2, H - 96);
+        ctx.fillText("WeddingPulse • Aetheria Continuum", W / 2, H - 92);
       }
 
       function initTableTentStudio() {
@@ -2470,6 +2705,7 @@
         const dateIn = document.getElementById("weddingDateInput");
         const fontSel = document.getElementById("fancyFontSelect");
         const promptIn = document.getElementById("tablePromptInput");
+        const showPassChk = document.getElementById("showGuestPassOnCardChk");
         const saveMsg = document.getElementById("eventSaveStatusMsg");
 
         const initialCouple = params.get("n") || (savedCfg && savedCfg.couple) || "Charlotte & Oliver";
@@ -2482,6 +2718,9 @@
         if (dateIn) dateIn.value = initialDate;
         if (fontSel) fontSel.value = initialFont;
         if (promptIn && savedCfg && savedCfg.prompt) promptIn.value = savedCfg.prompt;
+        if (showPassChk && savedCfg && typeof savedCfg.showGuestPass === "boolean") {
+          showPassChk.checked = savedCfg.showGuestPass;
+        }
 
         applyWeddingBrandingToHero(initialCouple, initialVenue, initialDate, initialFont);
 
@@ -2500,6 +2739,10 @@
 
         if (fontSel) {
           fontSel.addEventListener("change", drawTableTentCard);
+        }
+
+        if (showPassChk) {
+          showPassChk.addEventListener("change", drawTableTentCard);
         }
 
         if (dlBtn) {
