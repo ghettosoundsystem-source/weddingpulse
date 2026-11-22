@@ -7,6 +7,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>WeddingPulse — Luxury Guest Photo &amp; Audio Guestbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cormorant+Garamond:ital,wght@0,700;1,700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,800;0,900;1,800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --ivory: #FAF6F0;
@@ -41,6 +44,61 @@
 
     button, input, select, textarea {
       font-family: inherit;
+    }
+
+    /* =========================================================
+       FANCY BOLD DISPLAY FONT STYLES FOR COUPLE NAMES, VENUE & DATE
+       ========================================================= */
+    .fancy-font-royal .couple-title {
+      font-family: "Cinzel Decorative", "Playfair Display", Georgia, serif;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 0 rgba(184, 150, 78, 0.25);
+    }
+    .fancy-font-royal .venue-title,
+    .fancy-font-royal .date-title {
+      font-family: "Cinzel Decorative", "Playfair Display", Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .fancy-font-script .couple-title {
+      font-family: "Great Vibes", "Brush Script MT", "Snell Roundhand", cursive;
+      font-weight: 700;
+      font-size: 2.65rem !important;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 0 rgba(30, 27, 24, 0.35), 0 2px 10px rgba(184, 150, 78, 0.25);
+    }
+    .fancy-font-script .venue-title,
+    .fancy-font-script .date-title {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+
+    .fancy-font-editorial .couple-title {
+      font-family: "Playfair Display", "Times New Roman", Georgia, serif;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+    .fancy-font-editorial .venue-title,
+    .fancy-font-editorial .date-title {
+      font-family: "Playfair Display", Georgia, serif;
+      font-weight: 800;
+    }
+
+    .fancy-font-classic .couple-title {
+      font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+    }
+    .fancy-font-classic .venue-title,
+    .fancy-font-classic .date-title {
+      font-family: "Cormorant Garamond", Garamond, Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.06em;
     }
 
     /* =========================================================
@@ -364,38 +422,74 @@
     }
 
     /* =========================================================
-       GUEST BOOTH (PHOTO + 30S VOICE TOAST)
+       WEDDING HERO BANNER (FANCY BOLD TYPOGRAPHY + HOST EDIT BUTTON)
        ========================================================= */
     .wedding-hero {
+      position: relative;
       text-align: center;
       background: linear-gradient(180deg, var(--ivory) 0%, var(--champagne) 100%);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px 14px;
+      border: 2px solid var(--gold);
+      box-shadow: inset 0 0 0 4px rgba(184, 150, 78, 0.18);
+      border-radius: 18px;
+      padding: 22px 16px 20px;
       margin-bottom: 18px;
     }
 
     .wedding-hero .eyebrow {
       font-size: 0.74rem;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold-dark);
       font-weight: bold;
     }
 
-    .wedding-hero h2 {
-      margin: 6px 0 4px;
-      font-size: 1.75rem;
-      font-weight: normal;
+    .wedding-hero .ornament-rule {
+      color: var(--gold);
+      font-size: 0.95rem;
+      letter-spacing: 0.25em;
+      margin: 4px 0;
+    }
+
+    .wedding-hero h2.couple-title {
+      margin: 6px 0 8px;
+      font-size: 2.05rem;
+      line-height: 1.2;
       color: var(--ink);
     }
 
-    .wedding-hero .date-line {
-      font-size: 0.9rem;
-      color: var(--ink-soft);
-      font-style: italic;
+    .wedding-hero .venue-title {
+      font-size: 1.05rem;
+      color: var(--ink);
+      margin-bottom: 3px;
     }
 
+    .wedding-hero .date-title {
+      font-size: 0.94rem;
+      color: var(--gold-dark);
+    }
+
+    #heroEditWeddingBtn {
+      display: none;
+      margin: 12px auto 0;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--gold-light);
+      border: 1px solid var(--gold);
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #heroEditWeddingBtn.visible {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* =========================================================
+       GUEST BOOTH (PHOTO + 30S VOICE TOAST)
+       ========================================================= */
     .booth-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -423,7 +517,7 @@
     }
 
     .field-group {
-      margin-bottom: 10px;
+      margin-bottom: 11px;
     }
 
     .field-group label {
@@ -435,6 +529,7 @@
     }
 
     .field-group input,
+    .field-group select,
     .field-group textarea {
       width: 100%;
       padding: 10px;
@@ -593,6 +688,13 @@
       grid-template-columns: 1fr 1.1fr;
       gap: 18px;
       align-items: start;
+    }
+
+    .customiser-card {
+      background: var(--ivory);
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 16px;
     }
 
     .tent-preview-box {
@@ -839,7 +941,7 @@
 
     <nav class="nav-bar" aria-label="WeddingPulse Navigation">
       <button type="button" class="nav-tab active" data-tab="boothTab">📸 Guest Booth</button>
-      <button type="button" class="nav-tab locked-tab" data-tab="qrTab" data-host-only="true">🖨️ QR Table Card</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="qrTab" data-host-only="true">🎨 Event &amp; QR Card</button>
       <button type="button" class="nav-tab locked-tab" data-tab="galleryTab" data-host-only="true">🥂 Keepsake Vault</button>
       <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Account</button>
     </nav>
@@ -848,10 +950,15 @@
          TAB 1: ZERO-DOWNLOAD GUEST PHOTO & VOICE BOOTH
          ======================================================= -->
     <section id="boothTab" class="panel-card active">
-      <div class="wedding-hero">
+      <div id="weddingHeroBox" class="wedding-hero fancy-font-royal">
         <div class="eyebrow">Leave a Memory For</div>
-        <h2 id="heroCoupleDisplay">Charlotte &amp; Oliver</h2>
-        <div id="heroDateVenueDisplay" class="date-line">22 November 2026 &bull; Cambridge</div>
+        <div class="ornament-rule">&#10022; &bull; &#10022;</div>
+        <h2 id="heroCoupleDisplay" class="couple-title">Charlotte &amp; Oliver</h2>
+        <div id="heroVenueDisplay" class="venue-title">The Orangery, Cambridge</div>
+        <div id="heroDateDisplay" class="date-title">Saturday, 22 November 2026</div>
+        <button type="button" id="heroEditWeddingBtn">
+          &#9998; Edit Couple Names, Venue &amp; Date
+        </button>
       </div>
 
       <div class="booth-grid">
@@ -945,26 +1052,41 @@
     </section>
 
     <!-- =======================================================
-         TAB 2: HOST EVENT SETUP & PRINTABLE QR TABLE-TENT CARD
+         TAB 2: COUPLE EVENT CUSTOMISER & PRINTABLE QR TABLE-TENT CARD
          ======================================================= -->
     <section id="qrTab" class="panel-card">
       <div class="section-head">
         <div>
-          <h3>Printable Luxury QR Table-Tent Stationery</h3>
-          <p>Customise your wedding details and print 5&times;7&quot; table cards so guests can scan and join instantly.</p>
+          <h3>Customise Couple Names, Venue &amp; Date + QR Table Card</h3>
+          <p>Personalise your wedding banner and 5&times;7&quot; table stationery in bold luxury typography. Your QR code automatically carries your names, venue, and date to every guest's phone.</p>
         </div>
       </div>
 
       <div class="qr-layout">
-        <div>
+        <div class="customiser-card">
           <div class="field-group">
-            <label for="coupleNamesInput">Couple's Names</label>
-            <input type="text" id="coupleNamesInput" value="Charlotte &amp; Oliver" />
+            <label for="coupleNamesInput">Couple's Names (Bold Display Title)</label>
+            <input type="text" id="coupleNamesInput" value="Charlotte &amp; Oliver" placeholder="e.g. Charlotte &amp; Oliver" />
           </div>
 
           <div class="field-group">
-            <label for="weddingDateInput">Wedding Date &amp; Venue</label>
-            <input type="text" id="weddingDateInput" value="22 November 2026 • Cambridge" />
+            <label for="weddingVenueInput">Wedding Venue</label>
+            <input type="text" id="weddingVenueInput" value="The Orangery, Cambridge" placeholder="e.g. The Orangery, Cambridge" />
+          </div>
+
+          <div class="field-group">
+            <label for="weddingDateInput">Wedding Date</label>
+            <input type="text" id="weddingDateInput" value="Saturday, 22 November 2026" placeholder="e.g. Saturday, 22 November 2026" />
+          </div>
+
+          <div class="field-group">
+            <label for="fancyFontSelect">Fancy Bold Font Style</label>
+            <select id="fancyFontSelect">
+              <option value="royal" selected>Royal Engraved Bold (Ornate Display)</option>
+              <option value="script">Grand Romantic Calligraphy (Bold Script)</option>
+              <option value="editorial">Vogue Editorial Bold (Heavy Italic Serif)</option>
+              <option value="classic">Heirloom Monogram Bold (Tall Capitals)</option>
+            </select>
           </div>
 
           <div class="field-group">
@@ -973,13 +1095,14 @@
           </div>
 
           <div class="field-group">
-            <label for="guestUrlInput">Live Guest QR URL (Auto-detected from GitHub Pages)</label>
-            <input type="url" id="guestUrlInput" />
+            <label for="guestUrlInput">Auto-Synced Guest QR Link (Includes Names, Venue &amp; Date)</label>
+            <input type="url" id="guestUrlInput" readonly style="background:#F7F2E8; color:#5C5349; font-size:0.8rem;" />
           </div>
 
           <button type="button" id="refreshTentBtn" class="btn-action-dark">
-            ✨ Update Table-Tent Stationery Card
+            ✨ Save &amp; Update Guestbook + QR Card
           </button>
+          <div id="eventSaveStatusMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
         </div>
 
         <div class="tent-preview-box">
@@ -1064,7 +1187,7 @@
     </section>
 
     <footer class="studio-footer">
-      WeddingPulse &bull; Crafted by Aetheria Continuum Studio, Cambridge
+      WeddingPulse &bull; Crafted by Aetheria Continuum Studio
     </footer>
   </div>
 
@@ -1081,7 +1204,7 @@
       const STORAGE_KEYS = {
         hostAccount: "wp_paid_host_account_v1",
         activeRole: "wp_active_role_v1",
-        eventConfig: "wp_event_config_v1"
+        eventConfig: "wp_event_config_v2"
       };
 
       const DB_NAME = "WeddingPulseKeepsakesDB";
@@ -1212,6 +1335,7 @@
         const pill = document.getElementById("roleStatusPill");
         const switchBtn = document.getElementById("switchRoleBtn");
         const guestBanner = document.getElementById("guestModeBanner");
+        const heroEditBtn = document.getElementById("heroEditWeddingBtn");
         const hostTabs = document.querySelectorAll('.nav-tab[data-host-only="true"]');
         const acctSummary = document.getElementById("hostAccountSummary");
         const acctEditor = document.getElementById("hostAccountEditor");
@@ -1226,6 +1350,14 @@
             t.classList.add("locked-tab");
           }
         });
+
+        if (heroEditBtn) {
+          if (isHost) {
+            heroEditBtn.classList.add("visible");
+          } else {
+            heroEditBtn.classList.remove("visible");
+          }
+        }
 
         if (isHost) {
           if (overlay) overlay.classList.add("hidden");
@@ -1312,11 +1444,11 @@
             /* Ignore */
           }
           applyRoleUI("CUSTOMER");
-          switchToTab("exportTab");
-          const msg = document.getElementById("hostAccountSaveMsg");
-          if (msg) {
-            msg.textContent =
-              "Event unlocked! Set your personal Couple Username & Password below so you can log in anytime.";
+          switchToTab("qrTab");
+          const evMsg = document.getElementById("eventSaveStatusMsg");
+          if (evMsg) {
+            evMsg.textContent =
+              "Event unlocked! Enter your Couple Names, Wedding Venue & Date above, then set your login in .ZIP & Account.";
           }
         } else if (isGuestQrScan) {
           const overlay = document.getElementById("hostGateOverlay");
@@ -1338,6 +1470,15 @@
             const overlay = document.getElementById("hostGateOverlay");
             if (overlay) overlay.classList.add("hidden");
             applyRoleUI("GUEST");
+          });
+        }
+
+        const heroEditBtn = document.getElementById("heroEditWeddingBtn");
+        if (heroEditBtn) {
+          heroEditBtn.addEventListener("click", () => {
+            switchToTab("qrTab");
+            const namesInput = document.getElementById("coupleNamesInput");
+            if (namesInput) namesInput.focus();
           });
         }
 
@@ -1718,7 +1859,7 @@
       }
 
       /* =========================================================
-         6. PURE-JS SCANNABLE QR CODE ENCODER (ISO/IEC 18004 V1-V6)
+         6. PURE-JS SCANNABLE QR CODE ENCODER (ISO/IEC 18004 V1-V10)
          ========================================================= */
       const QR_GF_EXP = new Uint8Array(512);
       const QR_GF_LOG = new Uint8Array(256);
@@ -1766,18 +1907,24 @@
       function generateQrMatrix(text) {
         const bytes = new TextEncoder().encode(text);
         const specs = [
-          { ver: 1, size: 21, total: 26, data: 19, ec: 7, align: [] },
-          { ver: 2, size: 25, total: 44, data: 34, ec: 10, align: [6, 18] },
-          { ver: 3, size: 29, total: 70, data: 55, ec: 15, align: [6, 22] },
-          { ver: 4, size: 33, total: 100, data: 80, ec: 20, align: [6, 26] },
-          { ver: 5, size: 37, total: 134, data: 108, ec: 26, align: [6, 30] },
-          { ver: 6, size: 41, total: 172, data: 136, ec: 36, align: [6, 34] }
+          { ver: 1, size: 21, data: 19, ecPer: 7, blocks: [[1, 19]], align: [], verBits: 0 },
+          { ver: 2, size: 25, data: 34, ecPer: 10, blocks: [[1, 34]], align: [6, 18], verBits: 0 },
+          { ver: 3, size: 29, data: 55, ecPer: 15, blocks: [[1, 55]], align: [6, 22], verBits: 0 },
+          { ver: 4, size: 33, data: 80, ecPer: 20, blocks: [[1, 80]], align: [6, 26], verBits: 0 },
+          { ver: 5, size: 37, data: 108, ecPer: 26, blocks: [[1, 108]], align: [6, 30], verBits: 0 },
+          { ver: 6, size: 41, data: 136, ecPer: 18, blocks: [[2, 68]], align: [6, 34], verBits: 0 },
+          { ver: 7, size: 45, data: 156, ecPer: 20, blocks: [[2, 78]], align: [6, 22, 38], verBits: 0x07c94 },
+          { ver: 8, size: 49, data: 194, ecPer: 24, blocks: [[2, 97]], align: [6, 24, 42], verBits: 0x085bc },
+          { ver: 9, size: 53, data: 232, ecPer: 30, blocks: [[2, 116]], align: [6, 26, 46], verBits: 0x09a99 },
+          { ver: 10, size: 57, data: 274, ecPer: 18, blocks: [[2, 68], [2, 69]], align: [6, 28, 50], verBits: 0x0a4d3 }
         ];
 
-        const cappedBytes = bytes.slice(0, 134);
+        const cappedBytes = bytes.slice(0, 271);
         let spec = specs[specs.length - 1];
         for (let i = 0; i < specs.length; i++) {
-          if (cappedBytes.length + 2 <= specs[i].data) {
+          const lenBits = specs[i].ver >= 10 ? 16 : 8;
+          const overhead = Math.ceil((4 + lenBits) / 8);
+          if (cappedBytes.length + overhead <= specs[i].data) {
             spec = specs[i];
             break;
           }
@@ -1791,7 +1938,7 @@
         };
 
         pushBits(0b0100, 4);
-        pushBits(cappedBytes.length, 8);
+        pushBits(cappedBytes.length, spec.ver >= 10 ? 16 : 8);
         for (let i = 0; i < cappedBytes.length; i++) {
           pushBits(cappedBytes[i], 8);
         }
@@ -1813,10 +1960,31 @@
           padIdx++;
         }
 
-        const ecCodewords = qrReedSolomon(dataCodewords, spec.ec);
-        const allCodewords = new Uint8Array(spec.total);
-        allCodewords.set(dataCodewords);
-        allCodewords.set(ecCodewords, spec.data);
+        const blockDataList = [];
+        const blockEcList = [];
+        let cursor = 0;
+        for (let g = 0; g < spec.blocks.length; g++) {
+          const [count, dLen] = spec.blocks[g];
+          for (let b = 0; b < count; b++) {
+            const slice = dataCodewords.slice(cursor, cursor + dLen);
+            cursor += dLen;
+            blockDataList.push(slice);
+            blockEcList.push(qrReedSolomon(slice, spec.ecPer));
+          }
+        }
+
+        const interleaved = [];
+        const maxD = Math.max(...blockDataList.map((b) => b.length));
+        for (let col = 0; col < maxD; col++) {
+          for (let b = 0; b < blockDataList.length; b++) {
+            if (col < blockDataList[b].length) interleaved.push(blockDataList[b][col]);
+          }
+        }
+        for (let col = 0; col < spec.ecPer; col++) {
+          for (let b = 0; b < blockEcList.length; b++) {
+            interleaved.push(blockEcList[b][col]);
+          }
+        }
 
         const N = spec.size;
         const grid = Array.from({ length: N }, () => new Int8Array(N));
@@ -1865,6 +2033,16 @@
           setFunctionModule(i, 6, i % 2 === 0);
         }
 
+        if (spec.verBits) {
+          for (let i = 0; i < 18; i++) {
+            const bit = ((spec.verBits >> i) & 1) === 1;
+            const r = Math.floor(i / 3);
+            const c = N - 11 + (i % 3);
+            setFunctionModule(r, c, bit);
+            setFunctionModule(c, r, bit);
+          }
+        }
+
         setFunctionModule(N - 8, 8, true);
         const fmt = 0x77c4;
         const fmtCoords1 = [
@@ -1882,7 +2060,7 @@
         }
 
         let bitIdx = 0;
-        const totalBits = allCodewords.length * 8;
+        const totalBits = interleaved.length * 8;
         let up = true;
         for (let col = N - 1; col >= 1; col -= 2) {
           if (col === 6) col--;
@@ -1893,7 +2071,7 @@
               if (!locked[r][c]) {
                 let dark = false;
                 if (bitIdx < totalBits) {
-                  const byteVal = allCodewords[bitIdx >> 3];
+                  const byteVal = interleaved[bitIdx >> 3];
                   dark = ((byteVal >> (7 - (bitIdx & 7))) & 1) === 1;
                   bitIdx++;
                 }
@@ -1909,8 +2087,87 @@
       }
 
       /* =========================================================
-         7. LUXURY 5x7" PRINTABLE TABLE-TENT STATIONERY CANVAS
+         7. COUPLE EVENT CUSTOMISER & 5x7" PRINTABLE QR TABLE CARD
          ========================================================= */
+      function buildGuestQrLink(couple, venue, dateStr, fontKey) {
+        const base = window.location.origin + window.location.pathname;
+        const qp = new URLSearchParams();
+        qp.set("mode", "guest");
+        if (couple) qp.set("n", couple);
+        if (venue) qp.set("v", venue);
+        if (dateStr) qp.set("d", dateStr);
+        if (fontKey) qp.set("f", fontKey);
+        return base + "?" + qp.toString();
+      }
+
+      function applyWeddingBrandingToHero(couple, venue, dateStr, fontKey) {
+        const heroBox = document.getElementById("weddingHeroBox");
+        const heroCouple = document.getElementById("heroCoupleDisplay");
+        const heroVenue = document.getElementById("heroVenueDisplay");
+        const heroDate = document.getElementById("heroDateDisplay");
+
+        if (heroBox) {
+          heroBox.classList.remove(
+            "fancy-font-royal",
+            "fancy-font-script",
+            "fancy-font-editorial",
+            "fancy-font-classic"
+          );
+          heroBox.classList.add("fancy-font-" + (fontKey || "royal"));
+        }
+        if (heroCouple) heroCouple.textContent = couple;
+        if (heroVenue) heroVenue.textContent = venue;
+        if (heroDate) heroDate.textContent = dateStr;
+      }
+
+      function getCanvasFontsForStyle(fontKey) {
+        switch (fontKey) {
+          case "script":
+            return {
+              coupleFont: 'bold 88px "Great Vibes", "Brush Script MT", cursive',
+              venueFont: '800 32px "Playfair Display", Georgia, serif',
+              dateFont: '800 28px "Playfair Display", Georgia, serif'
+            };
+          case "editorial":
+            return {
+              coupleFont: 'italic 900 66px "Playfair Display", Georgia, serif',
+              venueFont: '800 32px "Playfair Display", Georgia, serif',
+              dateFont: '800 27px "Playfair Display", Georgia, serif'
+            };
+          case "classic":
+            return {
+              coupleFont: '700 64px "Cormorant Garamond", Garamond, Georgia, serif',
+              venueFont: '700 33px "Cormorant Garamond", Garamond, Georgia, serif',
+              dateFont: '700 28px "Cormorant Garamond", Garamond, Georgia, serif'
+            };
+          case "royal":
+          default:
+            return {
+              coupleFont: '900 58px "Cinzel Decorative", "Playfair Display", Georgia, serif',
+              venueFont: '700 30px "Cinzel Decorative", "Playfair Display", Georgia, serif',
+              dateFont: '700 25px "Cinzel Decorative", "Playfair Display", Georgia, serif'
+            };
+        }
+      }
+
+      function drawWrappedCenterText(ctx, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(/\s+/);
+        let line = "";
+        let curY = y;
+        for (let i = 0; i < words.length; i++) {
+          const test = line ? line + " " + words[i] : words[i];
+          if (ctx.measureText(test).width > maxWidth && line) {
+            ctx.fillText(line, x, curY);
+            line = words[i];
+            curY += lineHeight;
+          } else {
+            line = test;
+          }
+        }
+        if (line) ctx.fillText(line, x, curY);
+        return curY;
+      }
+
       function drawTableTentCard() {
         const canvas = document.getElementById("tableTentCanvas");
         if (!canvas) return;
@@ -1922,16 +2179,17 @@
         canvas.height = H;
 
         const couple = (document.getElementById("coupleNamesInput").value || "Charlotte & Oliver").trim();
-        const dateVenue = (document.getElementById("weddingDateInput").value || "22 November 2026 • Cambridge").trim();
+        const venue = (document.getElementById("weddingVenueInput").value || "The Orangery, Cambridge").trim();
+        const dateStr = (document.getElementById("weddingDateInput").value || "Saturday, 22 November 2026").trim();
+        const fontKey = (document.getElementById("fancyFontSelect").value || "royal").trim();
         const prompt = (document.getElementById("tablePromptInput").value || "Scan to snap a 35mm photo & leave a 30s voice toast").trim();
-        const guestUrl = (document.getElementById("guestUrlInput").value || window.location.href).trim();
 
-        safeSet(STORAGE_KEYS.eventConfig, { couple, dateVenue, prompt, guestUrl });
+        const guestUrl = buildGuestQrLink(couple, venue, dateStr, fontKey);
+        const urlIn = document.getElementById("guestUrlInput");
+        if (urlIn) urlIn.value = guestUrl;
 
-        const heroCouple = document.getElementById("heroCoupleDisplay");
-        const heroDate = document.getElementById("heroDateVenueDisplay");
-        if (heroCouple) heroCouple.textContent = couple;
-        if (heroDate) heroDate.textContent = dateVenue;
+        safeSet(STORAGE_KEYS.eventConfig, { couple, venue, dateStr, fontKey, prompt, guestUrl });
+        applyWeddingBrandingToHero(couple, venue, dateStr, fontKey);
 
         const bg = ctx.createLinearGradient(0, 0, 0, H);
         bg.addColorStop(0, "#FFFDF9");
@@ -1948,28 +2206,36 @@
         ctx.strokeRect(68, 68, W - 136, H - 136);
 
         ctx.fillStyle = "#8C6D2E";
-        ctx.font = "bold 24px Georgia, serif";
+        ctx.font = "bold 23px Georgia, serif";
         ctx.textAlign = "center";
-        ctx.fillText("OUR DIGITAL GUESTBOOK", W / 2, 165);
+        ctx.fillText("OUR DIGITAL GUESTBOOK", W / 2, 145);
+
+        const fonts = getCanvasFontsForStyle(fontKey);
+        const displayCouple = fontKey === "classic" ? couple.toUpperCase() : couple;
 
         ctx.fillStyle = "#1E1B18";
-        ctx.font = "normal 64px Georgia, serif";
-        ctx.fillText(couple, W / 2, 255);
+        ctx.font = fonts.coupleFont;
+        const afterCoupleY = drawWrappedCenterText(ctx, displayCouple, W / 2, 232, W - 180, 68);
 
-        ctx.fillStyle = "#5C5349";
-        ctx.font = "italic 28px Georgia, serif";
-        ctx.fillText(dateVenue, W / 2, 310);
+        ctx.fillStyle = "#1E1B18";
+        ctx.font = fonts.venueFont;
+        const afterVenueY = drawWrappedCenterText(ctx, venue, W / 2, afterCoupleY + 52, W - 200, 38);
 
+        ctx.fillStyle = "#8C6D2E";
+        ctx.font = fonts.dateFont;
+        ctx.fillText(dateStr, W / 2, afterVenueY + 42);
+
+        const ruleY = Math.min(435, afterVenueY + 72);
         ctx.strokeStyle = "#B8964E";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.moveTo(280, 355);
-        ctx.lineTo(W - 280, 355);
+        ctx.moveTo(270, ruleY);
+        ctx.lineTo(W - 270, ruleY);
         ctx.stroke();
 
-        const qrBoxSize = 520;
+        const qrBoxSize = 490;
         const qrBoxX = (W - qrBoxSize) / 2;
-        const qrBoxY = 415;
+        const qrBoxY = ruleY + 34;
 
         ctx.fillStyle = "#FFFFFF";
         ctx.fillRect(qrBoxX, qrBoxY, qrBoxSize, qrBoxSize);
@@ -1981,8 +2247,8 @@
         const modCount = matrix.length;
         const quietZone = 4;
         const totalModules = modCount + quietZone * 2;
-        const cellSize = (qrBoxSize - 40) / totalModules;
-        const startOffset = qrBoxX + 20 + quietZone * cellSize;
+        const cellSize = (qrBoxSize - 36) / totalModules;
+        const startOffset = qrBoxX + 18 + quietZone * cellSize;
 
         ctx.fillStyle = "#1E1B18";
         for (let r = 0; r < modCount; r++) {
@@ -1990,7 +2256,7 @@
             if (matrix[r][c] === 1) {
               ctx.fillRect(
                 Math.round(startOffset + c * cellSize),
-                Math.round(qrBoxY + 20 + quietZone * cellSize + r * cellSize),
+                Math.round(qrBoxY + 18 + quietZone * cellSize + r * cellSize),
                 Math.ceil(cellSize),
                 Math.ceil(cellSize)
               );
@@ -1998,46 +2264,65 @@
           }
         }
 
+        const footerTopY = qrBoxY + qrBoxSize + 58;
         ctx.fillStyle = "#1E1B18";
-        ctx.font = "bold 30px Georgia, serif";
-        ctx.fillText("SCAN WITH YOUR PHONE CAMERA", W / 2, 1020);
+        ctx.font = "bold 29px Georgia, serif";
+        ctx.fillText("SCAN WITH YOUR PHONE CAMERA", W / 2, footerTopY);
 
         ctx.fillStyle = "#5C5349";
-        ctx.font = "26px Georgia, serif";
-        ctx.fillText(prompt, W / 2, 1072);
+        ctx.font = "25px Georgia, serif";
+        ctx.fillText(prompt, W / 2, footerTopY + 48);
 
         ctx.fillStyle = "#3E5245";
-        ctx.font = "italic 24px Georgia, serif";
-        ctx.fillText("No app download required • Opens straight in your browser", W / 2, 1130);
+        ctx.font = "italic 23px Georgia, serif";
+        ctx.fillText("No app download required • Opens straight in your browser", W / 2, footerTopY + 98);
 
         ctx.fillStyle = "#8C6D2E";
         ctx.font = "20px Georgia, serif";
-        ctx.fillText("WeddingPulse • Aetheria Continuum", W / 2, H - 105);
+        ctx.fillText("WeddingPulse • Aetheria Continuum", W / 2, H - 96);
       }
 
       function initTableTentStudio() {
-        const defaultGuestUrl = window.location.origin + window.location.pathname + "?mode=guest";
+        const params = new URLSearchParams(window.location.search);
         const savedCfg = safeGet(STORAGE_KEYS.eventConfig, null);
 
         const coupleIn = document.getElementById("coupleNamesInput");
+        const venueIn = document.getElementById("weddingVenueInput");
         const dateIn = document.getElementById("weddingDateInput");
+        const fontSel = document.getElementById("fancyFontSelect");
         const promptIn = document.getElementById("tablePromptInput");
-        const urlIn = document.getElementById("guestUrlInput");
+        const saveMsg = document.getElementById("eventSaveStatusMsg");
 
-        if (savedCfg) {
-          if (savedCfg.couple && coupleIn) coupleIn.value = savedCfg.couple;
-          if (savedCfg.dateVenue && dateIn) dateIn.value = savedCfg.dateVenue;
-          if (savedCfg.prompt && promptIn) promptIn.value = savedCfg.prompt;
-          if (savedCfg.guestUrl && urlIn) urlIn.value = savedCfg.guestUrl;
-        } else if (urlIn) {
-          urlIn.value = defaultGuestUrl;
-        }
+        // Priority: URL query parameters (from guest scanning QR code) -> saved localStorage -> defaults
+        const initialCouple = params.get("n") || (savedCfg && savedCfg.couple) || "Charlotte & Oliver";
+        const initialVenue = params.get("v") || (savedCfg && savedCfg.venue) || "The Orangery, Cambridge";
+        const initialDate = params.get("d") || (savedCfg && savedCfg.dateStr) || "Saturday, 22 November 2026";
+        const initialFont = params.get("f") || (savedCfg && savedCfg.fontKey) || "royal";
+
+        if (coupleIn) coupleIn.value = initialCouple;
+        if (venueIn) venueIn.value = initialVenue;
+        if (dateIn) dateIn.value = initialDate;
+        if (fontSel) fontSel.value = initialFont;
+        if (promptIn && savedCfg && savedCfg.prompt) promptIn.value = savedCfg.prompt;
+
+        applyWeddingBrandingToHero(initialCouple, initialVenue, initialDate, initialFont);
 
         const refreshBtn = document.getElementById("refreshTentBtn");
         const dlBtn = document.getElementById("downloadTentPngBtn");
         const printBtn = document.getElementById("printTentBtn");
 
-        if (refreshBtn) refreshBtn.addEventListener("click", drawTableTentCard);
+        if (refreshBtn) {
+          refreshBtn.addEventListener("click", () => {
+            drawTableTentCard();
+            if (saveMsg) {
+              saveMsg.textContent = "Saved! Your names, venue, date & QR code have been updated.";
+            }
+          });
+        }
+
+        if (fontSel) {
+          fontSel.addEventListener("change", drawTableTentCard);
+        }
 
         if (dlBtn) {
           dlBtn.addEventListener("click", () => {
@@ -2060,6 +2345,11 @@
         }
 
         drawTableTentCard();
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => {
+            drawTableTentCard();
+          });
+        }
       }
 
       /* =========================================================
@@ -2283,7 +2573,8 @@
 
               const cfg = safeGet(STORAGE_KEYS.eventConfig, {
                 couple: "Charlotte & Oliver",
-                dateVenue: "22 November 2026"
+                venue: "The Orangery, Cambridge",
+                dateStr: "Saturday, 22 November 2026"
               });
               const zipFiles = [];
               let htmlRows = "";
@@ -2316,8 +2607,8 @@
                 escapeHtml(cfg.couple) +
                 " Keepsake Guestbook</title></head>" +
                 "<body style='font-family:Georgia,serif; max-width:760px; margin:24px auto; padding:16px; background:#FAF6F0; color:#1E1B18;'>" +
-                "<h1>" + escapeHtml(cfg.couple) + " — WeddingPulse Keepsakes</h1>" +
-                "<p>" + escapeHtml(cfg.dateVenue) + "</p><hr/>" +
+                "<h1 style='font-weight:900;'>" + escapeHtml(cfg.couple) + "</h1>" +
+                "<p><strong>" + escapeHtml(cfg.venue || "") + "</strong> &bull; " + escapeHtml(cfg.dateStr || "") + "</p><hr/>" +
                 htmlRows +
                 "</body></html>";
 
