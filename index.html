@@ -353,6 +353,24 @@
       display: flex;
     }
 
+    #firstTimePasswordBanner {
+      display: none;
+      background: linear-gradient(135deg, #2B2520 0%, #161310 100%);
+      color: #FFFDF9;
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    #firstTimePasswordBanner.visible {
+      display: flex;
+    }
+
     .nav-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -538,6 +556,29 @@
       font-size: 0.92rem;
       background: #FFF;
       color: var(--ink);
+    }
+
+    .password-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-input-wrap input {
+      padding-right: 68px;
+    }
+
+    .btn-toggle-eye {
+      position: absolute;
+      right: 8px;
+      background: var(--champagne);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 0.74rem;
+      font-weight: bold;
+      color: var(--ink);
+      cursor: pointer;
     }
 
     .btn-action-dark {
@@ -814,6 +855,17 @@
       margin-bottom: 16px;
     }
 
+    .security-note-box {
+      background: var(--sage-light);
+      border: 1px solid rgba(62, 82, 69, 0.32);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.82rem;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-top: 12px;
+    }
+
     .studio-footer {
       text-align: center;
       margin-top: 26px;
@@ -902,7 +954,7 @@
       <div class="login-panel">
         <div class="login-fields">
           <input type="text" id="loginUserField" placeholder="Couple Username" autocomplete="username" />
-          <input type="password" id="loginPassField" placeholder="Account / Dev Password" autocomplete="current-password" />
+          <input type="password" id="loginPassField" placeholder="Your Password" autocomplete="current-password" />
         </div>
         <button type="button" id="hostLoginBtn" class="btn-unlock">
           Enter Host Studio
@@ -923,9 +975,22 @@
       </div>
       <div class="topbar-actions">
         <span id="roleStatusPill" class="status-pill">Guest Booth Mode</span>
+        <button type="button" id="topbarChangePassBtn" class="btn-outline" style="display:none;">🔑 Change Password</button>
         <button type="button" id="switchRoleBtn" class="btn-outline">🔑 Host Login</button>
       </div>
     </header>
+
+    <div id="firstTimePasswordBanner" role="status">
+      <div>
+        <strong style="color:var(--gold-light);">🎉 Event Pass Unlocked! Create Your Private Password</strong>
+        <div style="font-size:0.84rem; margin-top:2px; color:#EFE6D5;">
+          Set your own Couple Username &amp; Password so only you can open your Keepsake Vault.
+        </div>
+      </div>
+      <button type="button" id="bannerSetPassBtn" class="btn-outline" style="background:var(--gold); color:#1E1B18; border-color:var(--gold-light); font-weight:bold;">
+        Set My Password &rarr;
+      </button>
+    </div>
 
     <div id="guestModeBanner" role="status">
       <div>
@@ -943,7 +1008,7 @@
       <button type="button" class="nav-tab active" data-tab="boothTab">📸 Guest Booth</button>
       <button type="button" class="nav-tab locked-tab" data-tab="qrTab" data-host-only="true">🎨 Event &amp; QR Card</button>
       <button type="button" class="nav-tab locked-tab" data-tab="galleryTab" data-host-only="true">🥂 Keepsake Vault</button>
-      <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Account</button>
+      <button type="button" class="nav-tab locked-tab" data-tab="exportTab" data-host-only="true">📦 .ZIP &amp; Password</button>
     </nav>
 
     <!-- =======================================================
@@ -977,7 +1042,6 @@
             <input type="text" id="photoGuestCaption" placeholder="e.g. Cheers to the newlyweds!" />
           </div>
 
-          <!-- Separate inputs so Camera and Gallery both work reliably on Android & iOS -->
           <input
             type="file"
             id="cameraFileInput"
@@ -1150,13 +1214,52 @@
     </section>
 
     <!-- =======================================================
-         TAB 4: OFFLINE .ZIP ARCHIVE & HOST ACCOUNT SETTINGS
+         TAB 4: OFFLINE .ZIP ARCHIVE & BUYER PASSWORD SETTINGS
          ======================================================= -->
     <section id="exportTab" class="panel-card">
       <div class="section-head">
         <div>
-          <h3>Offline Keepsake .ZIP Archive &amp; Host Account</h3>
-          <p>Download all guest photos, audio files, and a printable HTML guestbook in one offline .ZIP bundle.</p>
+          <h3>Offline Keepsake .ZIP Archive &amp; Buyer Password</h3>
+          <p>Download your complete wedding keepsake bundle or change your couple login username and password.</p>
+        </div>
+      </div>
+
+      <div class="account-box">
+        <strong style="font-size:1.05rem; color:var(--ink);">🔑 Couple Login &amp; Change Password</strong>
+        <p id="hostAccountSummary" style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);"></p>
+
+        <div id="hostAccountEditor">
+          <div class="field-group">
+            <label for="editHostUserInput">Couple Username</label>
+            <input type="text" id="editHostUserInput" placeholder="e.g. CharlotteOliver" autocomplete="username" />
+          </div>
+
+          <div class="login-fields">
+            <div class="field-group" style="margin-bottom:0;">
+              <label for="editHostPassInput">New Password (min 4 characters)</label>
+              <div class="password-input-wrap">
+                <input type="password" id="editHostPassInput" placeholder="Enter new password" autocomplete="new-password" />
+                <button type="button" class="btn-toggle-eye" data-target="editHostPassInput">Show</button>
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-bottom:0;">
+              <label for="confirmHostPassInput">Confirm New Password</label>
+              <div class="password-input-wrap">
+                <input type="password" id="confirmHostPassInput" placeholder="Re-enter new password" autocomplete="new-password" />
+                <button type="button" class="btn-toggle-eye" data-target="confirmHostPassInput">Show</button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" id="saveHostAccountBtn" class="btn-action-sage" style="margin-top:12px;">
+            ✓ Save New Username &amp; Password
+          </button>
+        </div>
+        <div id="hostAccountSaveMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
+
+        <div class="security-note-box">
+          <strong>🔒 How Your Wedding Vault Is Protected:</strong> Your password is hashed with SHA-256 directly on your device (never saved in plain text), and all guest photos and voice toasts stay stored locally on your device rather than uploaded to a public server. Always download your <strong>.ZIP Keepsake Archive</strong> below after your wedding as a permanent backup.
         </div>
       </div>
 
@@ -1170,20 +1273,6 @@
         </button>
         <div id="zipStatusMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
       </div>
-
-      <div class="account-box">
-        <strong style="font-size:1.05rem; color:var(--ink);">🔑 Couple Host Account Login</strong>
-        <p id="hostAccountSummary" style="margin:6px 0 12px; font-size:0.86rem; color:var(--ink-soft);"></p>
-
-        <div id="hostAccountEditor" class="login-fields">
-          <input type="text" id="editHostUserInput" placeholder="Couple Username (e.g. CharlotteOliver)" />
-          <input type="text" id="editHostPassInput" placeholder="Couple Password (min 4 chars)" />
-        </div>
-        <button type="button" id="saveHostAccountBtn" class="btn-action-sage" style="margin-top:8px;">
-          Save Host Username &amp; Password
-        </button>
-        <div id="hostAccountSaveMsg" style="margin-top:8px; font-size:0.84rem; font-weight:bold; color:var(--sage);"></div>
-      </div>
     </section>
 
     <footer class="studio-footer">
@@ -1196,13 +1285,13 @@
       "use strict";
 
       /* =========================================================
-         1. CONFIGURATION & AUTHENTICATION CONSTANTS
+         1. CONFIGURATION & CRYPTOGRAPHIC PASSWORD HELPERS
          ========================================================= */
       const STRIPE_EVENT_LINK = "https://buy.stripe.com/6oUbJ1cexfVibmLfkY8EM0d";
       const DEV_MASTER_PASSWORD = "PULSE-DEV-2026";
 
       const STORAGE_KEYS = {
-        hostAccount: "wp_paid_host_account_v1",
+        hostAccount: "wp_paid_host_account_v2",
         activeRole: "wp_active_role_v1",
         eventConfig: "wp_event_config_v2"
       };
@@ -1226,6 +1315,31 @@
         } catch (err) {
           /* Ignore storage errors */
         }
+      }
+
+      function generateRandomSalt() {
+        const arr = new Uint8Array(12);
+        if (window.crypto && window.crypto.getRandomValues) {
+          window.crypto.getRandomValues(arr);
+        } else {
+          for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
+        }
+        return Array.from(arr, (b) => b.toString(16).padStart(2, "0")).join("");
+      }
+
+      async function hashPasswordWithSalt(password, salt) {
+        const payload = salt + ":" + password;
+        if (window.crypto && window.crypto.subtle) {
+          const enc = new TextEncoder().encode(payload);
+          const digest = await window.crypto.subtle.digest("SHA-256", enc);
+          return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+        }
+        let h = 2166136261;
+        for (let i = 0; i < payload.length; i++) {
+          h ^= payload.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return "fb_" + (h >>> 0).toString(16);
       }
 
       function registerInlineManifest() {
@@ -1318,7 +1432,7 @@
       }
 
       /* =========================================================
-         3. HOST & DEVELOPER AUTHENTICATION + GUEST QR MODE
+         3. HOST & DEVELOPER AUTHENTICATION + BUYER PASSWORD MANAGER
          ========================================================= */
       let currentRole = "GUEST";
 
@@ -1334,12 +1448,13 @@
         const overlay = document.getElementById("hostGateOverlay");
         const pill = document.getElementById("roleStatusPill");
         const switchBtn = document.getElementById("switchRoleBtn");
+        const changePassBtn = document.getElementById("topbarChangePassBtn");
         const guestBanner = document.getElementById("guestModeBanner");
+        const firstPassBanner = document.getElementById("firstTimePasswordBanner");
         const heroEditBtn = document.getElementById("heroEditWeddingBtn");
         const hostTabs = document.querySelectorAll('.nav-tab[data-host-only="true"]');
         const acctSummary = document.getElementById("hostAccountSummary");
         const acctEditor = document.getElementById("hostAccountEditor");
-        const saveAcctBtn = document.getElementById("saveHostAccountBtn");
 
         const isHost = role === "DEV" || role === "CUSTOMER";
 
@@ -1366,35 +1481,41 @@
 
           if (role === "DEV") {
             if (pill) pill.textContent = "Developer Admin";
+            if (changePassBtn) changePassBtn.style.display = "none";
+            if (firstPassBanner) firstPassBanner.classList.remove("visible");
             if (acctSummary) {
               acctSummary.innerHTML =
-                "Signed in with <strong>Developer Master Password</strong> (<code>" +
-                DEV_MASTER_PASSWORD +
-                "</code>).";
+                "Signed in as <strong>Developer Admin</strong>. Paying buyers see the personal Username &amp; Password creator right here when they unlock via Stripe.";
             }
             if (acctEditor) acctEditor.style.display = "none";
-            if (saveAcctBtn) saveAcctBtn.style.display = "none";
           } else {
             const acct = safeGet(STORAGE_KEYS.hostAccount, null);
             if (pill) pill.textContent = "Host: " + (acct ? acct.username : "Couple");
-            if (acctSummary && acct) {
-              acctSummary.innerHTML =
-                "Current Username: <code>" +
-                acct.username +
-                "</code> &bull; Current Password: <code>" +
-                acct.password +
-                "</code>";
-              const uIn = document.getElementById("editHostUserInput");
-              const pIn = document.getElementById("editHostPassInput");
-              if (uIn) uIn.value = acct.username;
-              if (pIn) pIn.value = acct.password;
+            if (changePassBtn) changePassBtn.style.display = "inline-block";
+            if (firstPassBanner) {
+              if (acct && acct.needsCustomPassword) {
+                firstPassBanner.classList.add("visible");
+              } else {
+                firstPassBanner.classList.remove("visible");
+              }
             }
-            if (acctEditor) acctEditor.style.display = "grid";
-            if (saveAcctBtn) saveAcctBtn.style.display = "inline-flex";
+            if (acctSummary && acct) {
+              const statusText = acct.needsCustomPassword
+                ? "Temporary unlock active — please choose your own personal Username &amp; Password below."
+                : "Active Couple Username: <code>" +
+                  escapeHtml(acct.username) +
+                  "</code> &bull; Password: <strong>Protected (SHA-256 Hashed)</strong>";
+              acctSummary.innerHTML = statusText;
+              const uIn = document.getElementById("editHostUserInput");
+              if (uIn && !uIn.value) uIn.value = acct.username;
+            }
+            if (acctEditor) acctEditor.style.display = "block";
           }
         } else {
           if (pill) pill.textContent = "Guest Booth Mode";
           if (switchBtn) switchBtn.textContent = "🔑 Host Login";
+          if (changePassBtn) changePassBtn.style.display = "none";
+          if (firstPassBanner) firstPassBanner.classList.remove("visible");
           if (guestBanner) guestBanner.classList.add("visible");
           switchToTab("boothTab");
         }
@@ -1415,9 +1536,24 @@
         if (tabId === "qrTab") drawTableTentCard();
       }
 
-      function initAuthAndNavigation() {
+      async function initAuthAndNavigation() {
         const stripeBtn = document.getElementById("stripeCheckoutBtn");
         if (stripeBtn) stripeBtn.href = STRIPE_EVENT_LINK;
+
+        document.querySelectorAll(".btn-toggle-eye").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("data-target");
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            if (input.type === "password") {
+              input.type = "text";
+              btn.textContent = "Hide";
+            } else {
+              input.type = "password";
+              btn.textContent = "Show";
+            }
+          });
+        });
 
         const params = new URLSearchParams(window.location.search);
         const isStripeReturn =
@@ -1429,10 +1565,15 @@
         if (isStripeReturn) {
           let acct = safeGet(STORAGE_KEYS.hostAccount, null);
           if (!acct || !acct.isPaid) {
+            const tempPass = generateInitialCouplePassword();
+            const salt = generateRandomSalt();
+            const hash = await hashPasswordWithSalt(tempPass, salt);
             acct = {
               isPaid: true,
               username: "Newlyweds",
-              password: generateInitialCouplePassword(),
+              salt: salt,
+              passwordHash: hash,
+              needsCustomPassword: true,
               createdAt: Date.now()
             };
             safeSet(STORAGE_KEYS.hostAccount, acct);
@@ -1444,11 +1585,12 @@
             /* Ignore */
           }
           applyRoleUI("CUSTOMER");
-          switchToTab("qrTab");
-          const evMsg = document.getElementById("eventSaveStatusMsg");
-          if (evMsg) {
-            evMsg.textContent =
-              "Event unlocked! Enter your Couple Names, Wedding Venue & Date above, then set your login in .ZIP & Account.";
+          switchToTab("exportTab");
+          const msg = document.getElementById("hostAccountSaveMsg");
+          if (msg) {
+            msg.style.color = "#3E5245";
+            msg.textContent =
+              "Event unlocked! Enter your own Couple Username and Password above so only you can access your vault.";
           }
         } else if (isGuestQrScan) {
           const overlay = document.getElementById("hostGateOverlay");
@@ -1482,9 +1624,20 @@
           });
         }
 
+        const goToPasswordEditor = () => {
+          switchToTab("exportTab");
+          const passInput = document.getElementById("editHostPassInput");
+          if (passInput) passInput.focus();
+        };
+
+        const topbarChangePassBtn = document.getElementById("topbarChangePassBtn");
+        const bannerSetPassBtn = document.getElementById("bannerSetPassBtn");
+        if (topbarChangePassBtn) topbarChangePassBtn.addEventListener("click", goToPasswordEditor);
+        if (bannerSetPassBtn) bannerSetPassBtn.addEventListener("click", goToPasswordEditor);
+
         const loginBtn = document.getElementById("hostLoginBtn");
         if (loginBtn) {
-          loginBtn.addEventListener("click", () => {
+          loginBtn.addEventListener("click", async () => {
             const userVal = (document.getElementById("loginUserField").value || "").trim();
             const passVal = (document.getElementById("loginPassField").value || "").trim();
             const statusEl = document.getElementById("gateStatusMsg");
@@ -1497,10 +1650,10 @@
             }
 
             const acct = safeGet(STORAGE_KEYS.hostAccount, null);
-            if (acct && acct.isPaid) {
+            if (acct && acct.isPaid && acct.salt && acct.passwordHash) {
               const userOk = !userVal || userVal.toLowerCase() === acct.username.toLowerCase();
-              const passOk = passVal === acct.password;
-              if (userOk && passOk) {
+              const candidateHash = await hashPasswordWithSalt(passVal, acct.salt);
+              if (userOk && candidateHash === acct.passwordHash) {
                 if (statusEl) statusEl.textContent = "";
                 safeSet(STORAGE_KEYS.activeRole, "CUSTOMER");
                 applyRoleUI("CUSTOMER");
@@ -1527,27 +1680,53 @@
 
         const saveAcctBtn = document.getElementById("saveHostAccountBtn");
         if (saveAcctBtn) {
-          saveAcctBtn.addEventListener("click", () => {
+          saveAcctBtn.addEventListener("click", async () => {
             const acct = safeGet(STORAGE_KEYS.hostAccount, null);
             const msg = document.getElementById("hostAccountSaveMsg");
             if (!acct || !acct.isPaid) return;
 
             const newU = (document.getElementById("editHostUserInput").value || "").trim();
             const newP = (document.getElementById("editHostPassInput").value || "").trim();
-            if (!newU || newP.length < 4) {
+            const confirmP = (document.getElementById("confirmHostPassInput").value || "").trim();
+
+            if (!newU) {
               if (msg) {
                 msg.style.color = "#7A2E3A";
-                msg.textContent = "Please enter a username and a password of at least 4 characters.";
+                msg.textContent = "Please enter a Couple Username.";
               }
               return;
             }
+            if (newP.length < 4) {
+              if (msg) {
+                msg.style.color = "#7A2E3A";
+                msg.textContent = "Please choose a password with at least 4 characters.";
+              }
+              return;
+            }
+            if (newP !== confirmP) {
+              if (msg) {
+                msg.style.color = "#7A2E3A";
+                msg.textContent = "Passwords do not match — please re-enter the same password in both boxes.";
+              }
+              return;
+            }
+
+            const newSalt = generateRandomSalt();
+            const newHash = await hashPasswordWithSalt(newP, newSalt);
             acct.username = newU;
-            acct.password = newP;
+            acct.salt = newSalt;
+            acct.passwordHash = newHash;
+            acct.needsCustomPassword = false;
             safeSet(STORAGE_KEYS.hostAccount, acct);
+
+            document.getElementById("editHostPassInput").value = "";
+            document.getElementById("confirmHostPassInput").value = "";
             applyRoleUI("CUSTOMER");
+
             if (msg) {
               msg.style.color = "#3E5245";
-              msg.textContent = "Saved! Use this username and password anytime to open your Host Vault.";
+              msg.textContent =
+                "Password updated and encrypted! Use username '" + newU + "' with your new password to unlock your vault.";
             }
           });
         }
@@ -2293,7 +2472,6 @@
         const promptIn = document.getElementById("tablePromptInput");
         const saveMsg = document.getElementById("eventSaveStatusMsg");
 
-        // Priority: URL query parameters (from guest scanning QR code) -> saved localStorage -> defaults
         const initialCouple = params.get("n") || (savedCfg && savedCfg.couple) || "Charlotte & Oliver";
         const initialVenue = params.get("v") || (savedCfg && savedCfg.venue) || "The Orangery, Cambridge";
         const initialDate = params.get("d") || (savedCfg && savedCfg.dateStr) || "Saturday, 22 November 2026";
@@ -2638,9 +2816,9 @@
       /* =========================================================
          10. BOOTSTRAP APPLICATION
          ========================================================= */
-      function boot() {
+      async function boot() {
         registerInlineManifest();
-        initAuthAndNavigation();
+        await initAuthAndNavigation();
         initPhotoBooth();
         initAudioBooth();
         initTableTentStudio();
