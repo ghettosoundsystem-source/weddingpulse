@@ -449,14 +449,30 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
-      padding: 13px 16px;
+      padding: 13px 12px;
       background: var(--ink);
       color: var(--gold-light);
       border: 1.5px solid var(--gold);
       border-radius: 12px;
-      font-size: 0.96rem;
+      font-size: 0.92rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-action-champagne {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 13px 12px;
+      background: var(--champagne);
+      color: var(--ink);
+      border: 1.5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.92rem;
       font-weight: bold;
       cursor: pointer;
     }
@@ -715,6 +731,12 @@
       }
     }
 
+    @media (max-width: 400px) {
+      .two-col-btns {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media print {
       @page {
         size: A5 portrait;
@@ -807,7 +829,7 @@
       <div>
         <strong>✨ Welcome to the Wedding Guestbook!</strong>
         <div style="font-size:0.84rem; margin-top:2px;">
-          Snap a disposable-style photo or record a 30-second voice toast for the happy couple below.
+          Snap a live disposable photo, upload from your gallery, or record a 30-second voice toast below.
         </div>
       </div>
       <button type="button" id="bannerHostBtn" class="btn-outline" style="background:#FFF; font-weight:bold;">
@@ -833,10 +855,10 @@
       </div>
 
       <div class="booth-grid">
-        <!-- 35MM DISPOSABLE PHOTO BOOTH -->
+        <!-- 35MM DISPOSABLE PHOTO BOOTH (CAMERA + GALLERY) -->
         <div class="booth-box">
-          <h4>1. Snap a 35mm Disposable Photo</h4>
-          <p>Take a candid photo with your phone camera. We develop it with warm vintage film grain and a classic date stamp.</p>
+          <h4>1. Snap or Upload a 35mm Photo</h4>
+          <p>Take a live candid photo or upload a favourite from your phone gallery—developed with warm vintage film grain and a date stamp.</p>
 
           <div class="field-group">
             <label for="photoGuestName">Your Name / Table</label>
@@ -848,6 +870,7 @@
             <input type="text" id="photoGuestCaption" placeholder="e.g. Cheers to the newlyweds!" />
           </div>
 
+          <!-- Separate inputs so Camera and Gallery both work reliably on Android & iOS -->
           <input
             type="file"
             id="cameraFileInput"
@@ -855,10 +878,21 @@
             capture="environment"
             style="display:none;"
           />
+          <input
+            type="file"
+            id="galleryFileInput"
+            accept="image/*"
+            style="display:none;"
+          />
 
-          <button type="button" id="triggerCameraBtn" class="btn-action-dark">
-            📷 Take Photo or Choose Picture
-          </button>
+          <div class="two-col-btns">
+            <button type="button" id="triggerCameraBtn" class="btn-action-dark">
+              📷 Snap Live Photo
+            </button>
+            <button type="button" id="triggerGalleryBtn" class="btn-action-champagne">
+              🖼️ Upload from Gallery
+            </button>
+          </div>
 
           <div id="photoPreviewCard" class="polaroid-preview">
             <img id="developedPhotoImg" alt="Developed 35mm wedding keepsake preview" />
@@ -1391,7 +1425,7 @@
       }
 
       /* =========================================================
-         4. 35MM DISPOSABLE PHOTO DEVELOPER (CANVAS FILM FILTER)
+         4. 35MM DISPOSABLE PHOTO DEVELOPER (CAMERA + GALLERY)
          ========================================================= */
       let pendingDevelopedDataUrl = null;
 
@@ -1461,38 +1495,48 @@
       }
 
       function initPhotoBooth() {
-        const triggerBtn = document.getElementById("triggerCameraBtn");
-        const fileInput = document.getElementById("cameraFileInput");
+        const triggerCameraBtn = document.getElementById("triggerCameraBtn");
+        const triggerGalleryBtn = document.getElementById("triggerGalleryBtn");
+        const cameraInput = document.getElementById("cameraFileInput");
+        const galleryInput = document.getElementById("galleryFileInput");
         const previewCard = document.getElementById("photoPreviewCard");
         const previewImg = document.getElementById("developedPhotoImg");
         const captionPreview = document.getElementById("developedCaptionPreview");
         const saveBtn = document.getElementById("savePhotoToVaultBtn");
         const statusMsg = document.getElementById("photoStatusMsg");
 
-        if (triggerBtn && fileInput) {
-          triggerBtn.addEventListener("click", () => {
-            fileInput.click();
-          });
-
-          fileInput.addEventListener("change", async (e) => {
-            const file = e.target.files && e.target.files[0];
-            if (!file) return;
-            if (statusMsg) statusMsg.textContent = "Developing 35mm film print...";
-            try {
-              const dataUrl = await develop35mmPhoto(file);
-              pendingDevelopedDataUrl = dataUrl;
-              const guest = (document.getElementById("photoGuestName").value || "Wedding Guest").trim();
-              const note = (document.getElementById("photoGuestCaption").value || "").trim();
-              if (previewImg) previewImg.src = dataUrl;
-              if (captionPreview) {
-                captionPreview.textContent = note ? '"' + note + '" — ' + guest : "Captured by " + guest;
-              }
-              if (previewCard) previewCard.classList.add("visible");
-              if (statusMsg) statusMsg.textContent = "";
-            } catch (err) {
-              if (statusMsg) statusMsg.textContent = "Please try taking or selecting another photo.";
+        async function handleSelectedFile(e) {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          if (statusMsg) statusMsg.textContent = "Developing 35mm film print...";
+          try {
+            const dataUrl = await develop35mmPhoto(file);
+            pendingDevelopedDataUrl = dataUrl;
+            const guest = (document.getElementById("photoGuestName").value || "Wedding Guest").trim();
+            const note = (document.getElementById("photoGuestCaption").value || "").trim();
+            if (previewImg) previewImg.src = dataUrl;
+            if (captionPreview) {
+              captionPreview.textContent = note ? '"' + note + '" — ' + guest : "Captured by " + guest;
             }
+            if (previewCard) previewCard.classList.add("visible");
+            if (statusMsg) statusMsg.textContent = "";
+          } catch (err) {
+            if (statusMsg) statusMsg.textContent = "Please try taking or selecting another photo.";
+          }
+        }
+
+        if (triggerCameraBtn && cameraInput) {
+          triggerCameraBtn.addEventListener("click", () => {
+            cameraInput.click();
           });
+          cameraInput.addEventListener("change", handleSelectedFile);
+        }
+
+        if (triggerGalleryBtn && galleryInput) {
+          triggerGalleryBtn.addEventListener("click", () => {
+            galleryInput.click();
+          });
+          galleryInput.addEventListener("change", handleSelectedFile);
         }
 
         if (saveBtn) {
@@ -1511,7 +1555,8 @@
             });
 
             pendingDevelopedDataUrl = null;
-            if (fileInput) fileInput.value = "";
+            if (cameraInput) cameraInput.value = "";
+            if (galleryInput) galleryInput.value = "";
             if (previewCard) previewCard.classList.remove("visible");
             if (statusMsg) {
               statusMsg.textContent = "Saved! Your 35mm photo is now in the couple's Keepsake Vault.";
